@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SE2 Timetable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================
+       DESIGN SYSTEM & THEMES
+       ======================================== */
+    :root {
+      /* LIGHT MODE (DEFAULT) */
+      --bg: #F8FAFC;
+      --bg-gradient-1: rgba(79, 70, 229, 0.05);
+      --bg-gradient-2: rgba(16, 185, 129, 0.03);
+      --card-bg: #FFFFFF;
+      --card-border: #E2E8F0;
+      --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+      
+      --text-main: #0F172A;
+      --text-title: #0F172A;
+      --text-muted: #475569;
+      --text-dim: #64748B;
+      
+      --accent: #4F46E5;
+      --accent-glow: rgba(79, 70, 229, 0.12);
+      --badge-bg: rgba(79, 70, 229, 0.08);
+      --badge-border: rgba(79, 70, 229, 0.18);
+      
+      --nav-bg: #F1F5F9;
+      --nav-border: #E2E8F0;
+      --nav-btn-text: #64748B;
+      --nav-btn-active-bg: #FFFFFF;
+      --nav-btn-active-text: #0F172A;
+      --nav-btn-active-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+      
+      --time-pill-bg: #F1F5F9;
+      --time-pill-border: #E2E8F0;
+      --time-pill-text: #475569;
+      
+      --happening-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, #FFFFFF 100%);
+      --happening-border: rgba(16, 185, 129, 0.4);
+      --happening-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.15);
+
+      --next-bg: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, #FFFFFF 100%);
+      --next-border: rgba(245, 158, 11, 0.35);
+
+      --free-bg: #F8FAFC;
+      --free-border: 1px dashed #CBD5E1;
+
+      --grid-header-bg: #F8FAFC;
+      --grid-cell-bg: #FFFFFF;
+      --grid-cell-border: #E2E8F0;
+      --grid-cell-today-bg: rgba(79, 70, 229, 0.04);
+      --grid-cell-today-border: rgba(79, 70, 229, 0.2);
+
+      --legend-border: #E2E8F0;
+
+      --green: #10B981;
+      --amber: #D97706;
+
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+    }
+
+    [data-theme="dark"] {
+      /* DARK MODE */
+      --bg: #030407;
+      --bg-gradient-1: rgba(99, 102, 241, 0.08);
+      --bg-gradient-2: rgba(16, 185, 129, 0.03);
+      --card-bg: rgba(18, 20, 29, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-shadow: none;
+      
+      --text-main: #F3F4F6;
+      --text-title: #FFFFFF;
+      --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+      
+      --accent: #6366F1;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+      --badge-bg: rgba(255, 255, 255, 0.05);
+      --badge-border: rgba(255, 255, 255, 0.08);
+      
+      --nav-bg: rgba(18, 20, 29, 0.6);
+      --nav-border: rgba(255, 255, 255, 0.08);
+      --nav-btn-text: #9CA3AF;
+      --nav-btn-active-bg: rgba(255, 255, 255, 0.1);
+      --nav-btn-active-text: #FFFFFF;
+      --nav-btn-active-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      
+      --time-pill-bg: rgba(255, 255, 255, 0.04);
+      --time-pill-border: rgba(255, 255, 255, 0.04);
+      --time-pill-text: #9CA3AF;
+      
+      --happening-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(18, 20, 29, 0.8) 100%);
+      --happening-border: rgba(16, 185, 129, 0.4);
+      --happening-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.15);
+
+      --next-bg: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(18, 20, 29, 0.8) 100%);
+      --next-border: rgba(245, 158, 11, 0.3);
+
+      --free-bg: rgba(255, 255, 255, 0.02);
+      --free-border: 1px dashed rgba(255, 255, 255, 0.06);
+
+      --grid-header-bg: #030407;
+      --grid-cell-bg: rgba(18, 20, 29, 0.7);
+      --grid-cell-border: rgba(255, 255, 255, 0.08);
+      --grid-cell-today-bg: rgba(99, 102, 241, 0.05);
+      --grid-cell-today-border: rgba(99, 102, 241, 0.2);
+
+      --legend-border: rgba(255, 255, 255, 0.04);
+
+      --green: #10B981;
+      --amber: #F59E0B;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background-image: 
+        radial-gradient(circle at 50% 0%, var(--bg-gradient-1) 0%, transparent 70%),
+        radial-gradient(circle at 80% 20%, var(--bg-gradient-2) 0%, transparent 50%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* ========================================
+       APP CONTAINER (MOBILE FIRST)
+       ======================================== */
+    .app-viewport {
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      padding: 20px 16px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========================================
+       HEADER COMPONENT
+       ======================================== */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 12px 4px 20px;
+    }
+
+    .badge-class {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .badge-class::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .title-main {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-title);
+      line-height: 1.1;
+    }
+
+    .subtitle-main {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--nav-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: var(--card-shadow);
+    }
+
+    .theme-toggle-btn:active {
+      transform: scale(0.92);
+    }
+
+    .header-date-box {
+      text-align: right;
+    }
+
+    .date-day {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .date-full {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ========================================
+       SEGMENTED CONTROL (NAVIGATION)
+       ======================================== */
+    .nav-segmented {
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--nav-border);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: none;
+      background: transparent;
+      color: var(--nav-btn-text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 44px;
+    }
+
+    .nav-btn.active {
+      background: var(--nav-btn-active-bg);
+      color: var(--nav-btn-active-text);
+      box-shadow: var(--nav-btn-active-shadow);
+    }
+
+    /* ========================================
+       TIMELINE / CARDS (TODAY VIEW)
+       ======================================== */
+    .view-section {
+      display: none;
+      animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Professional Class Card */
+    .card-item {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .card-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--chip-color, var(--text-dim));
+      border-radius: 4px 0 0 4px;
+    }
+
+    .card-item.happening-now {
+      border-color: var(--happening-border);
+      background: var(--happening-bg);
+      box-shadow: var(--happening-shadow);
+    }
+
+    .card-item.up-next {
+      border-color: var(--next-border);
+      background: var(--next-bg);
+    }
+
+    .card-item.free-slot {
+      background: var(--free-bg);
+      border: var(--free-border);
+      padding: 14px 18px;
+      opacity: 0.75;
+      box-shadow: none;
+    }
+
+    .card-item.free-slot::before {
+      display: none;
+    }
+
+    .card-item.free-slot .card-subject-code {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-time-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--time-pill-text);
+      background: var(--time-pill-bg);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--time-pill-border);
+    }
+
+    .status-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .status-tag.happening {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    [data-theme="dark"] .status-tag.happening {
+      color: #34D399;
+    }
+
+    .status-tag.happening .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulseDot 1.5s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.4; }
+    }
+
+    .status-tag.next {
+      background: rgba(245, 158, 11, 0.12);
+      color: #D97706;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    [data-theme="dark"] .status-tag.next {
+      color: #FBBF24;
+    }
+
+    .status-tag.ended {
+      background: var(--time-pill-bg);
+      color: var(--text-dim);
+    }
+
+    .card-middle {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-subject-code {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.02em;
+    }
+
+    .card-subject-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #FFF;
+      background: var(--chip-color);
+      opacity: 0.95;
+    }
+
+    .card-prof-name {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ========================================
+       WEEK GRID (HORIZONTAL MOBILE SCROLL)
+       ======================================== */
+    .week-scroll-wrapper {
+      overflow-x: auto;
+      margin: 0 -16px;
+      padding: 0 16px 12px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .week-scroll-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .week-grid-container {
+      display: grid;
+      grid-template-columns: 56px repeat(5, 115px);
+      gap: 8px;
+      min-width: max-content;
+    }
+
+    .grid-header-cell {
+      padding: 10px 4px;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--grid-header-bg);
+    }
+
+    .grid-header-cell.is-today {
+      color: var(--accent);
+      background: var(--badge-bg);
+      border-radius: var(--radius-sm);
+    }
+
+    .grid-time-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .grid-slot-cell {
+      background: var(--grid-cell-bg);
+      border: 1px solid var(--grid-cell-border);
+      border-radius: var(--radius-md);
+      padding: 10px 8px;
+      min-height: 58px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      position: relative;
+      box-shadow: var(--card-shadow);
+    }
+
+    .grid-slot-cell.is-today {
+      background: var(--grid-cell-today-bg);
+      border-color: var(--grid-cell-today-border);
+    }
+
+    .grid-slot-cell.break-slot {
+      background: transparent;
+      border: 1px dashed var(--card-border);
+      align-items: center;
+      box-shadow: none;
+    }
+
+    .break-text {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .grid-subj-code {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .grid-prof-code {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+    }
+
+    .grid-color-line {
+      height: 2px;
+      width: 100%;
+      border-radius: 2px;
+      margin-top: 4px;
+      background: var(--chip-color);
+    }
+
+    /* ========================================
+       LEGEND ACCORDION
+       ======================================== */
+    .legend-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 24px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .legend-trigger {
+      width: 100%;
+      padding: 16px 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .legend-trigger .icon-chevron {
+      transition: transform 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .legend-trigger.active .icon-chevron {
+      transform: rotate(180deg);
+    }
+
+    .legend-content {
+      display: none;
+      padding: 0 18px 16px;
+      border-top: 1px solid var(--legend-border);
+    }
+
+    .legend-content.show {
+      display: block;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--legend-border);
+    }
+
+    .legend-row:last-child {
+      border-bottom: none;
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--chip-color);
+    }
+
+    .legend-abbr {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-title);
+      width: 48px;
+    }
+
+    .legend-full-name {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .legend-prof-tag {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      background: var(--card-bg);
+      border: 1px dashed var(--card-border);
+      border-radius: var(--radius-lg);
+    }
+
+    .empty-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .empty-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Footer */
+    .app-footer {
+      text-align: center;
+      margin-top: auto;
+      padding-top: 32px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div>
+        <div class="badge-class">SE2</div>
+        <h1 class="title-main">Engineering</h1>
+        <div class="subtitle-main">Second Year Timetable</div>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+          <!-- Sun Icon (shown in dark mode) -->
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <!-- Moon Icon (shown in light mode) -->
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="header-date-box">
+          <div class="date-day" id="dateDay">MON</div>
+          <div class="date-full" id="dateFull">25 AUG</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="nav-segmented">
+      <button class="nav-btn active" id="btnToday" onclick="switchTab('today')">
+        Today View
+      </button>
+      <button class="nav-btn" id="btnWeek" onclick="switchTab('week')">
+        Full Week
+      </button>
+    </nav>
+
+    <!-- TODAY VIEW -->
+    <main id="viewToday" class="view-section active">
+      <div class="timeline-container" id="todayContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+
+    <!-- WEEK VIEW -->
+    <main id="viewWeek" class="view-section">
+      <div class="week-scroll-wrapper">
+        <div class="week-grid-container" id="weekContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </main>
+
+    <!-- SUBJECT LEGEND -->
+    <section class="legend-card">
+      <button class="legend-trigger" id="legendTrigger" onclick="toggleLegend()">
+        <span>Subject Directory</span>
+        <svg class="icon-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <div class="legend-content" id="legendContent">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      Built for SE2 &bull; PICT
+    </footer>
+
+  </div>
+
+  <script>
+    // DATA CONFIGURATION
+    const SUBJECTS = {
+      DS:    { full: 'Data Structures',                     prof: 'Prof. AAK', color: '#3B82F6' },
+      OS:    { full: 'Operating Systems',                   prof: 'Prof. SS',  color: '#8B5CF6' },
+      OOPCG: { full: 'OOP & Computer Graphics',            prof: 'Prof. APK', color: '#EC4899' },
+      DELD:  { full: 'Digital Electronics & Logic',         prof: 'Prof. SK',  color: '#F97316' },
+      UHV:   { full: 'Universal Human Values',             prof: 'Prof. NJ',  color: '#14B8A6' },
+      FREE:  { full: 'Free Slot',                           prof: '',          color: '' }
+    };
+
+    const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const DAY_ABBRS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+    const SLOTS = [
+      { id: 1, start: '09:00', end: '10:00', startMin: 540,  endMin: 600 },
+      { id: 2, start: '10:00', end: '11:00', startMin: 600,  endMin: 660 },
+      null, // Short Break
+      { id: 3, start: '11:15', end: '12:15', startMin: 675,  endMin: 735 },
+      { id: 4, start: '12:15', end: '13:15', startMin: 735,  endMin: 795 },
+      null, // Lunch Break
+      { id: 5, start: '13:45', end: '14:45', startMin: 825,  endMin: 885 },
+      { id: 6, start: '14:45', end: '15:45', startMin: 885,  endMin: 945 }
+    ];
+
+    const BREAKS = [
+      { label: 'Short Break', range: '11:00 - 11:15' },
+      { label: 'Lunch Break', range: '13:15 - 13:45' }
+    ];
+
+    const SCHEDULE = {
+      1: { 1: 'DS',    2: 'FREE', 3: 'FREE', 4: 'FREE', 5: 'FREE', 6: 'FREE' },
+      2: { 1: 'OS',    2: 'OOPCG', 3: 'DS',   4: 'DELD', 5: 'FREE', 6: 'FREE' },
+      3: { 1: 'OS',    2: 'OOPCG', 3: 'FREE', 4: 'FREE', 5: 'FREE', 6: 'FREE' },
+      4: { 1: 'OOPCG', 2: 'DELD',  3: 'FREE', 4: 'FREE', 5: 'FREE', 6: 'FREE' },
+      5: { 1: 'UHV',   2: 'DS',    3: 'FREE', 4: 'FREE', 5: 'FREE', 6: 'FREE' }
+    };
+
+    // THEME MANAGEMENT (Light Mode Default)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      applyTheme(savedTheme);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      const sunIcon = document.querySelector('.icon-sun');
+      const moonIcon = document.querySelector('.icon-moon');
+      if (theme === 'dark') {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      } else {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      applyTheme(next);
+    }
+
+    // UTILITIES
+    function getNowSec() {
+      const d = new Date();
+      return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+    }
+
+    function getNowMin() {
+      return Math.floor(getNowSec() / 60);
+    }
+
+    function formatTime12(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const h12 = h % 12 || 12;
+      return `${h12}:${m < 10 ? '0' : ''}${m} ${ampm}`;
+    }
+
+    function formatCountdown(targetSec) {
+      if (targetSec <= 0) return 'now';
+      const m = Math.floor(targetSec / 60);
+      const s = targetSec % 60;
+      const h = Math.floor(m / 60);
+      const remM = m % 60;
+
+      if (h > 0) return `in ${h}h ${remM}m`;
+      if (remM > 0) return `in ${remM}m ${s}s`;
+      return `in ${s}s`;
+    }
+
+    // INITIALIZE DATE
+    function initHeader() {
+      const d = new Date();
+      document.getElementById('dateDay').textContent = DAY_ABBRS[d.getDay()];
+      document.getElementById('dateFull').textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }).toUpperCase();
+    }
+
+    // TAB SWITCHING
+    function switchTab(tab) {
+      document.getElementById('btnToday').classList.toggle('active', tab === 'today');
+      document.getElementById('btnWeek').classList.toggle('active', tab === 'week');
+      document.getElementById('viewToday').classList.toggle('active', tab === 'today');
+      document.getElementById('viewWeek').classList.toggle('active', tab === 'week');
+    }
+
+    // LEGEND TOGGLE
+    function toggleLegend() {
+      const trigger = document.getElementById('legendTrigger');
+      const content = document.getElementById('legendContent');
+      trigger.classList.toggle('active');
+      content.classList.toggle('show');
+    }
+
+    // RENDER TODAY VIEW
+    function renderToday() {
+      const container = document.getElementById('todayContainer');
+      const dayIdx = new Date().getDay();
+
+      if (dayIdx === 0 || dayIdx === 6) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-emoji">☕</div>
+            <div class="empty-title">Weekend Mode</div>
+            <div class="empty-sub">No lectures scheduled for today. Enjoy!</div>
+          </div>`;
+        return;
+      }
+
+      const daySched = SCHEDULE[dayIdx];
+      const curMin = getNowMin();
+      let html = '';
+      let activeClassFound = false;
+
+      for (let i = 0; i < SLOTS.length; i++) {
+        const slot = SLOTS[i];
+        if (!slot) continue;
+
+        const subjKey = daySched[slot.id];
+
+        const isHappening = curMin >= slot.startMin && curMin < slot.endMin;
+        const isPast = curMin >= slot.endMin;
+        const isFuture = curMin < slot.startMin;
+
+        if (subjKey === 'FREE') {
+          html += `
+            <div class="card-item free-slot">
+              <div class="card-top">
+                <span class="card-time-pill">${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)}</span>
+                <span class="card-subject-code">Free / Self-Study</span>
+              </div>
+            </div>`;
+          continue;
+        }
+
+        const subj = SUBJECTS[subjKey];
+        let cardStatusClass = '';
+        let tagHtml = '';
+
+        if (isHappening) {
+          cardStatusClass = 'happening-now';
+          tagHtml = `
+            <div class="status-tag happening">
+              <span class="pulse-dot"></span>
+              <span>Live &bull; <span class="js-happening-countdown" data-end="${slot.endMin}"></span></span>
+            </div>`;
+          activeClassFound = true;
+        } else if (isPast) {
+          const endedAgo = curMin - slot.endMin;
+          if (endedAgo <= 15) {
+            tagHtml = `<div class="status-tag ended">Just Ended</div>`;
+          }
+        } else if (isFuture) {
+          cardStatusClass = 'up-next';
+          tagHtml = `
+            <div class="status-tag next">
+              <span>Up Next &bull; <span class="js-next-countdown" data-start="${slot.startMin}"></span></span>
+            </div>`;
+        }
+
+        html += `
+          <div class="card-item ${cardStatusClass}" style="--chip-color: ${subj.color}">
+            <div class="card-top">
+              <span class="card-time-pill">${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)}</span>
+              ${tagHtml}
+            </div>
+            <div class="card-middle">
+              <div class="card-title-row">
+                <span class="card-subject-code">${subjKey}</span>
+                <span class="card-subject-badge">${subj.full}</span>
+              </div>
+              <div class="card-prof-name">${subj.prof}</div>
+            </div>
+          </div>`;
+      }
+
+      if (!html) {
+        html = `
+          <div class="empty-state">
+            <div class="empty-emoji">🎉</div>
+            <div class="empty-title">All Done For Today</div>
+            <div class="empty-sub">No more lectures remaining on your schedule.</div>
+          </div>`;
+      }
+
+      container.innerHTML = html;
+      updateTimers();
+    }
+
+    // RENDER WEEK VIEW
+    function renderWeek() {
+      const container = document.getElementById('weekContainer');
+      const todayIdx = new Date().getDay();
+      const weekDays = [1, 2, 3, 4, 5];
+      let html = '';
+
+      // Header Row
+      html += `<div class="grid-header-cell">Time</div>`;
+      weekDays.forEach(d => {
+        const isToday = d === todayIdx;
+        html += `<div class="grid-header-cell ${isToday ? 'is-today' : ''}">${DAY_ABBRS[d]}</div>`;
+      });
+
+      // Slot Rows
+      SLOTS.forEach((slot, idx) => {
+        if (slot === null) {
+          // Break Row
+          const b = idx === 2 ? BREAKS[0] : BREAKS[1];
+          html += `<div class="grid-time-cell" style="font-size:0.55rem;">BREAK</div>`;
+          weekDays.forEach(d => {
+            const isToday = d === todayIdx;
+            html += `
+              <div class="grid-slot-cell break-slot ${isToday ? 'is-today' : ''}">
+                <span class="break-text">${b.label}</span>
+              </div>`;
+          });
+          return;
+        }
+
+        // Standard Slot
+        html += `<div class="grid-time-cell">${slot.start}</div>`;
+        weekDays.forEach(d => {
+          const isToday = d === todayIdx;
+          const subjKey = SCHEDULE[d][slot.id];
+
+          if (subjKey === 'FREE') {
+            html += `<div class="grid-slot-cell ${isToday ? 'is-today' : ''}"></div>`;
+          } else {
+            const subj = SUBJECTS[subjKey];
+            html += `
+              <div class="grid-slot-cell ${isToday ? 'is-today' : ''}">
+                <div class="grid-subj-code">${subjKey}</div>
+                <div class="grid-prof-code">${subj.prof}</div>
+                <div class="grid-color-line" style="--chip-color: ${subj.color}"></div>
+              </div>`;
+          }
+        });
+      });
+
+      container.innerHTML = html;
+    }
+
+    // RENDER LEGEND
+    function renderLegend() {
+      const container = document.getElementById('legendContent');
+      let html = '';
+      Object.keys(SUBJECTS).forEach(key => {
+        if (key === 'FREE') return;
+        const subj = SUBJECTS[key];
+        html += `
+          <div class="legend-row">
+            <div class="legend-left">
+              <span class="legend-dot" style="--chip-color: ${subj.color}"></span>
+              <span class="legend-abbr">${key}</span>
+              <span class="legend-full-name">${subj.full}</span>
+            </div>
+            <span class="legend-prof-tag">${subj.prof}</span>
+          </div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    // DYNAMIC TIMER UPDATER
+    function updateTimers() {
+      const nowSec = getNowSec();
+
+      // Update Up Next Countdowns
+      document.querySelectorAll('.js-next-countdown').forEach(el => {
+        const startMin = parseInt(el.getAttribute('data-start'), 10);
+        const remSec = (startMin * 60) - nowSec;
+        el.textContent = formatCountdown(remSec);
+      });
+
+      // Update Happening Countdowns
+      document.querySelectorAll('.js-happening-countdown').forEach(el => {
+        const endMin = parseInt(el.getAttribute('data-end'), 10);
+        const remSec = (endMin * 60) - nowSec;
+        if (remSec <= 0) {
+          el.textContent = 'Ending now';
+        } else {
+          const m = Math.floor(remSec / 60);
+          const s = remSec % 60;
+          el.textContent = `${m}m ${s}s left`;
+        }
+      });
+    }
+
+    // INITIALIZATION & LOOPS
+    initTheme();
+    initHeader();
+    renderToday();
+    renderWeek();
+    renderLegend();
+
+    setInterval(updateTimers, 1000);
+    setInterval(renderToday, 30000); // Periodic structural sync
+  </script>
+</body>
+</html>
