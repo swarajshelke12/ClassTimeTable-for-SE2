@@ -164,6 +164,49 @@
         flex-direction: column;
       }
 
+      /* Home Screen Install Tip */
+      .install-tip-bar {
+        background: var(--nav-bg);
+        border: 1px solid var(--nav-border);
+        border-radius: 100px;
+        padding: 5px 12px;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+        line-height: 1.3;
+      }
+
+      .install-tip-text {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+      }
+
+      .install-tip-text b {
+        color: var(--text-main);
+      }
+
+      .install-tip-close {
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        cursor: pointer;
+        font-size: 0.9rem;
+        line-height: 1;
+        padding: 0 4px;
+        border-radius: 4px;
+        transition: color 0.15s ease;
+      }
+
+      .install-tip-close:hover {
+        color: var(--text-main);
+      }
+
       /* Header */
       .app-header {
         display: flex;
@@ -980,6 +1023,15 @@
   </head>
   <body>
     <div class="app-viewport">
+      <!-- QUICK ACCESS TIP -->
+      <div class="install-tip-bar" id="installTipBar">
+        <div class="install-tip-text">
+          <span>📲</span>
+          <span>Tip: Tap <b>⋮ (3 dots)</b> &rarr; <b>"Add to Home screen"</b> for easy 1-tap access</span>
+        </div>
+        <button class="install-tip-close" onclick="dismissTip()" aria-label="Dismiss tip">&times;</button>
+      </div>
+
       <!-- HEADER -->
       <header class="app-header">
         <div>
@@ -4286,6 +4338,16 @@
             el.textContent = `${m}m ${s}s left`;
           }
         });
+      }
+
+      function dismissTip() {
+        const bar = document.getElementById("installTipBar");
+        if (bar) bar.style.display = "none";
+        localStorage.setItem("tip_dismissed", "1");
+      }
+      if (localStorage.getItem("tip_dismissed") === "1") {
+        const bar = document.getElementById("installTipBar");
+        if (bar) bar.style.display = "none";
       }
 
       // INITIALIZE
