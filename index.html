@@ -767,7 +767,7 @@
       }
 
       .chat-msg {
-        max-width: 85%;
+        max-width: 88%;
         padding: 10px 14px;
         border-radius: 14px;
         font-size: 0.82rem;
@@ -790,9 +790,15 @@
         border-bottom-right-radius: 4px;
       }
 
-      .chat-msg-highlight {
-        font-weight: 700;
+      .chat-msg a {
         color: var(--accent);
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .chat-msg.user a {
+        color: #FFFFFF;
       }
 
       .chat-msg ul {
@@ -1097,11 +1103,11 @@
             <button class="quick-chip" onclick="sendQuickPrompt('What is today\'s schedule?')">📅 Today's schedule</button>
             <button class="quick-chip" onclick="sendQuickPrompt('When is DS Lab?')">💻 When is DS Lab?</button>
             <button class="quick-chip" onclick="sendQuickPrompt('Who teaches OS?')">👨‍🏫 Who teaches OS?</button>
-            <button class="quick-chip" onclick="sendQuickPrompt('When is lunch break?')">🍱 Lunch break</button>
+            <button class="quick-chip" onclick="sendQuickPrompt('Who built this website?')">👨‍💻 About Developer</button>
           </div>
           <div class="chat-messages" id="chatMessages">
             <div class="chat-msg bot">
-              👋 Hi! I'm your SE2 Timetable Assistant. Ask me anything about your lectures, lab allocations, faculty, or daily schedule!
+              👋 Hi! I'm your SE2 Timetable Assistant. Ask me anything about your lectures, lab allocations, faculty, breaks, or about the project developer!
             </div>
           </div>
           <div class="chat-input-row">
@@ -1109,7 +1115,7 @@
               type="text"
               id="chatInput"
               class="chat-input"
-              placeholder="Ask about a class, day, batch, or prof..."
+              placeholder="Ask about a class, day, batch, prof, or developer..."
               onkeydown="if(event.key==='Enter') sendChatMessage()"
             />
             <button class="chat-send-btn" onclick="sendChatMessage()" aria-label="Send message">
@@ -4136,17 +4142,30 @@
         addChatMessage("user", text);
         input.value = "";
 
-        // Process answer
         setTimeout(() => {
           const response = generateChatbotReply(text);
           addChatMessage("bot", response);
-        }, 200);
+        }, 180);
       }
 
       function generateChatbotReply(query) {
         const q = query.toLowerCase();
         const batch = (currentBatch === "ALL" ? "B2" : currentBatch);
         const dayIdx = new Date().getDay();
+
+        // 0. Developer query
+        if (
+          q.includes("developer") ||
+          q.includes("who built") ||
+          q.includes("who made") ||
+          q.includes("creator") ||
+          q.includes("author") ||
+          q.includes("swaraj") ||
+          q.includes("social") ||
+          q.includes("contact")
+        ) {
+          return `👨‍💻 <b>Crafted by Swaraj Shelke</b><br>Second Year Engineering &bull; PICT<br><br>Here are his links if you'd like to connect or check out his work:<br>• 📸 <a href="https://www.instagram.com/swarajshelke12" target="_blank" rel="noopener">Instagram</a><br>• 📺 <a href="https://www.youtube.com/@swaraj_shelke" target="_blank" rel="noopener">YouTube</a><br>• 💼 <a href="https://www.linkedin.com/in/swaraj-shelke-0a3a752b8/" target="_blank" rel="noopener">LinkedIn</a><br>• 🐙 <a href="https://github.com/swarajshelke12" target="_blank" rel="noopener">GitHub</a>`;
+        }
 
         // 1. Next class / upcoming query
         if (q.includes("next") || q.includes("upcoming")) {
@@ -4199,7 +4218,7 @@
           return `Here is our faculty directory:<br>• <b>DS</b>: Prof. Alka Kumbhar / Nilima Patil<br>• <b>OS</b>: Prof. Smita Sapkal / Mahesh Swami<br>• <b>OOPCG</b>: Prof. Ashvini Kheole / Kalyani Zore<br>• <b>DELD</b>: Prof. Smita Kathar<br>• <b>UHV</b>: Prof. Neelam Jadhav<br>• <b>DM</b>: Dr. Maya Jadhav<br>• <b>ED</b>: Prof. Nilam Naidu`;
         }
 
-        // 4. Specific Subject / Lab Query (e.g. When is DS lab?)
+        // 4. Specific Subject / Lab Query
         if (q.includes("ds") || q.includes("data structure")) {
           return `💻 <b>Data Structures (DS / DS Lab):</b><br>• Theory: Mon 9:00 AM, Tue 11:15 AM, Fri 10:00 AM<br>• Practicals: Scheduled across Mon, Tue, Wed, Thu, Fri depending on your batch. (Check the Full Week tab for ${batch})`;
         }
@@ -4220,7 +4239,7 @@
           return `☕ <b>Daily Break Timings:</b><br>• <b>Short Break</b>: 11:00 AM &ndash; 11:15 AM (15 min)<br>• <b>Lunch Break</b>: 1:15 PM &ndash; 1:45 PM (30 min)`;
         }
 
-        // 5. Day queries (Monday, Tuesday, etc.)
+        // 5. Day queries
         const dayNamesLookup = { monday: 1, mon: 1, tuesday: 2, tue: 2, wednesday: 3, wed: 3, thursday: 4, thu: 4, friday: 5, fri: 5 };
         for (const dname in dayNamesLookup) {
           if (q.includes(dname)) {
@@ -4239,7 +4258,7 @@
         }
 
         // Default response
-        return `🤖 You can ask me:<br>• "What is my next class?"<br>• "Today's schedule"<br>• "Schedule on Thursday"<br>• "Who teaches DELD?"<br>• "Break timings"`;
+        return `🤖 You can ask me:<br>• "What is my next class?"<br>• "Today's schedule"<br>• "Schedule on Thursday"<br>• "Who teaches DELD?"<br>• "Who built this website?"`;
       }
 
       // DYNAMIC TIMER UPDATER
