@@ -1,4365 +1,1770 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>SE2 Timetable</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      /* ========================================
-       DESIGN SYSTEM & THEMES
-       ======================================== */
-      :root {
-        --bg: #F8FAFC;
-        --bg-gradient-1: rgba(79, 70, 229, 0.05);
-        --bg-gradient-2: rgba(16, 185, 129, 0.03);
-        --card-bg: #FFFFFF;
-        --card-border: #E2E8F0;
-        --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-
-        --text-main: #0F172A;
-        --text-title: #0F172A;
-        --text-muted: #475569;
-        --text-dim: #64748B;
-
-        --accent: #4F46E5;
-        --accent-glow: rgba(79, 70, 229, 0.12);
-        --badge-bg: rgba(79, 70, 229, 0.08);
-        --badge-border: rgba(79, 70, 229, 0.18);
-
-        --nav-bg: #F1F5F9;
-        --nav-border: #E2E8F0;
-        --nav-btn-text: #64748B;
-        --nav-btn-active-bg: #FFFFFF;
-        --nav-btn-active-text: #0F172A;
-        --nav-btn-active-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-
-        --time-pill-bg: #F1F5F9;
-        --time-pill-border: #E2E8F0;
-        --time-pill-text: #475569;
-
-        --happening-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, #FFFFFF 100%);
-        --happening-border: rgba(16, 185, 129, 0.4);
-        --happening-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.15);
-
-        --next-bg: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, #FFFFFF 100%);
-        --next-border: rgba(245, 158, 11, 0.35);
-
-        --free-bg: #F8FAFC;
-        --free-border: 1px dashed #CBD5E1;
-
-        --grid-header-bg: #F8FAFC;
-        --grid-cell-bg: #FFFFFF;
-        --grid-cell-border: #E2E8F0;
-        --grid-cell-today-bg: rgba(79, 70, 229, 0.04);
-        --grid-cell-today-border: rgba(79, 70, 229, 0.2);
-
-        --legend-border: #E2E8F0;
-
-        --chat-user-bg: #4F46E5;
-        --chat-user-text: #FFFFFF;
-        --chat-bot-bg: #F1F5F9;
-        --chat-bot-text: #0F172A;
-        --chat-bot-border: #E2E8F0;
-
-        --radius-lg: 20px;
-        --radius-md: 14px;
-        --radius-sm: 8px;
-      }
-
-      [data-theme="dark"] {
-        --bg: #030407;
-        --bg-gradient-1: rgba(99, 102, 241, 0.08);
-        --bg-gradient-2: rgba(16, 185, 129, 0.03);
-        --card-bg: rgba(18, 20, 29, 0.7);
-        --card-border: rgba(255, 255, 255, 0.08);
-        --card-shadow: none;
-
-        --text-main: #F3F4F6;
-        --text-title: #FFFFFF;
-        --text-muted: #9CA3AF;
-        --text-dim: #6B7280;
-
-        --accent: #6366F1;
-        --accent-glow: rgba(99, 102, 241, 0.15);
-        --badge-bg: rgba(255, 255, 255, 0.05);
-        --badge-border: rgba(255, 255, 255, 0.08);
-
-        --nav-bg: rgba(18, 20, 29, 0.6);
-        --nav-border: rgba(255, 255, 255, 0.08);
-        --nav-btn-text: #9CA3AF;
-        --nav-btn-active-bg: rgba(255, 255, 255, 0.1);
-        --nav-btn-active-text: #FFFFFF;
-        --nav-btn-active-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-
-        --time-pill-bg: rgba(255, 255, 255, 0.04);
-        --time-pill-border: rgba(255, 255, 255, 0.04);
-        --time-pill-text: #9CA3AF;
-
-        --happening-bg: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(18, 20, 29, 0.8) 100%);
-        --happening-border: rgba(16, 185, 129, 0.4);
-        --happening-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.15);
-
-        --next-bg: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(18, 20, 29, 0.8) 100%);
-        --next-border: rgba(245, 158, 11, 0.3);
-
-        --free-bg: rgba(255, 255, 255, 0.02);
-        --free-border: 1px dashed rgba(255, 255, 255, 0.06);
-
-        --grid-header-bg: #030407;
-        --grid-cell-bg: rgba(18, 20, 29, 0.7);
-        --grid-cell-border: rgba(255, 255, 255, 0.08);
-        --grid-cell-today-bg: rgba(99, 102, 241, 0.05);
-        --grid-cell-today-border: rgba(99, 102, 241, 0.2);
-
-        --legend-border: rgba(255, 255, 255, 0.04);
-
-        --chat-user-bg: #6366F1;
-        --chat-user-text: #FFFFFF;
-        --chat-bot-bg: rgba(255, 255, 255, 0.05);
-        --chat-bot-text: #F3F4F6;
-        --chat-bot-border: rgba(255, 255, 255, 0.08);
-      }
-
-      *, *::before, *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      body {
-        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-        background-color: var(--bg);
-        color: var(--text-main);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        background-image: 
-          radial-gradient(circle at 50% 0%, var(--bg-gradient-1) 0%, transparent 70%),
-          radial-gradient(circle at 80% 20%, var(--bg-gradient-2) 0%, transparent 50%);
-        background-attachment: fixed;
-        overflow-x: hidden;
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-
-      .app-viewport {
-        width: 100%;
-        max-width: 440px;
-        min-height: 100vh;
-        padding: 20px 16px 40px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      /* Home Screen Install Tip */
-      .install-tip-bar {
-        background: var(--nav-bg);
-        border: 1px solid var(--nav-border);
-        border-radius: 100px;
-        padding: 5px 12px;
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        margin-bottom: 6px;
-        line-height: 1.3;
-      }
-
-      .install-tip-text {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex: 1;
-      }
-
-      .install-tip-text b {
-        color: var(--text-main);
-      }
-
-      .install-tip-close {
-        background: transparent;
-        border: none;
-        color: var(--text-dim);
-        cursor: pointer;
-        font-size: 0.9rem;
-        line-height: 1;
-        padding: 0 4px;
-        border-radius: 4px;
-        transition: color 0.15s ease;
-      }
-
-      .install-tip-close:hover {
-        color: var(--text-main);
-      }
-
-      /* Header */
-      .app-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        padding: 12px 4px 16px;
-      }
-
-      .badge-class {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--badge-bg);
-        border: 1px solid var(--badge-border);
-        padding: 4px 10px;
-        border-radius: 100px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        color: var(--accent);
-        margin-bottom: 6px;
-        text-transform: uppercase;
-      }
-
-      .badge-class::before {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 8px var(--accent);
-      }
-
-      .title-main {
-        font-size: 1.5rem;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        color: var(--text-title);
-        line-height: 1.1;
-      }
-
-      .subtitle-main {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        margin-top: 2px;
-        font-weight: 500;
-      }
-
-      .header-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .theme-toggle-btn {
-        background: var(--nav-bg);
-        border: 1px solid var(--card-border);
-        color: var(--text-main);
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        box-shadow: var(--card-shadow);
-      }
-
-      .theme-toggle-btn:active {
-        transform: scale(0.92);
-      }
-
-      .header-date-box {
-        text-align: right;
-      }
-
-      .date-day {
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .date-full {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--text-main);
-        font-family: 'JetBrains Mono', monospace;
-      }
-
-      /* Batch Selector */
-      .batch-selector-wrap {
-        margin-bottom: 14px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .batch-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 2px;
-      }
-
-      .batch-selector-label {
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--text-muted);
-      }
-
-      .batch-current-tag {
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: var(--accent);
-        background: var(--badge-bg);
-        padding: 2px 8px;
-        border-radius: 6px;
-        border: 1px solid var(--badge-border);
-      }
-
-      .batch-pills {
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        padding: 2px 2px 6px;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .batch-pills::-webkit-scrollbar {
-        display: none;
-      }
-
-      .batch-pill {
-        flex: 0 0 auto;
-        padding: 6px 12px;
-        border-radius: 100px;
-        background: var(--nav-bg);
-        border: 1px solid var(--nav-border);
-        color: var(--nav-btn-text);
-        font-family: inherit;
-        font-size: 0.75rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .batch-pill:hover {
-        color: var(--text-main);
-      }
-
-      .batch-pill.active {
-        background: var(--accent);
-        color: #FFFFFF;
-        border-color: var(--accent);
-        box-shadow: 0 2px 8px var(--accent-glow);
-      }
-
-      /* Navigation Tabs */
-      .nav-segmented {
-        background: var(--nav-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--nav-border);
-        padding: 4px;
-        border-radius: var(--radius-md);
-        display: flex;
-        gap: 4px;
-        margin-bottom: 18px;
-      }
-
-      .nav-btn {
-        flex: 1;
-        padding: 9px 0;
-        border: none;
-        background: transparent;
-        color: var(--nav-btn-text);
-        font-family: inherit;
-        font-size: 0.82rem;
-        font-weight: 600;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        min-height: 40px;
-      }
-
-      .nav-btn.active {
-        background: var(--nav-btn-active-bg);
-        color: var(--nav-btn-active-text);
-        box-shadow: var(--nav-btn-active-shadow);
-      }
-
-      /* View Sections */
-      .view-section {
-        display: none;
-        animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .view-section.active {
-        display: block;
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      .timeline-container {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      /* Card Items */
-      .card-item {
-        background: var(--card-bg);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-lg);
-        padding: 16px;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.25s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        box-shadow: var(--card-shadow);
-      }
-
-      .card-item::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: var(--chip-color, var(--text-dim));
-        border-radius: 4px 0 0 4px;
-      }
-
-      .card-item.happening-now {
-        border-color: var(--happening-border);
-        background: var(--happening-bg);
-        box-shadow: var(--happening-shadow);
-      }
-
-      .card-item.up-next {
-        border-color: var(--next-border);
-        background: var(--next-bg);
-      }
-
-      .card-item.free-slot {
-        background: var(--free-bg);
-        border: var(--free-border);
-        padding: 14px 16px;
-        opacity: 0.75;
-        box-shadow: none;
-      }
-
-      .card-item.free-slot::before {
-        display: none;
-      }
-
-      .card-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .card-time-pill {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--time-pill-text);
-        background: var(--time-pill-bg);
-        padding: 4px 10px;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--time-pill-border);
-      }
-
-      .status-tag {
-        font-size: 0.7rem;
-        font-weight: 700;
-        padding: 3px 8px;
-        border-radius: 100px;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
-      }
-
-      .status-tag.happening {
-        background: rgba(16, 185, 129, 0.12);
-        color: #059669;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-      }
-
-      [data-theme="dark"] .status-tag.happening {
-        color: #34D399;
-      }
-
-      .status-tag.happening .pulse-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #10B981;
-        box-shadow: 0 0 8px #10B981;
-        animation: pulseDot 1.5s infinite;
-      }
-
-      @keyframes pulseDot {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.4); opacity: 0.4; }
-      }
-
-      .status-tag.next {
-        background: rgba(245, 158, 11, 0.12);
-        color: #D97706;
-        border: 1px solid rgba(245, 158, 11, 0.25);
-      }
-
-      [data-theme="dark"] .status-tag.next {
-        color: #FBBF24;
-      }
-
-      .status-tag.ended {
-        background: var(--time-pill-bg);
-        color: var(--text-dim);
-      }
-
-      .card-middle {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .card-title-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .card-subject-code {
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: var(--text-title);
-        letter-spacing: -0.02em;
-      }
-
-      .card-subject-badge {
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 3px 8px;
-        border-radius: 6px;
-        color: #FFF;
-        background: var(--chip-color);
-        opacity: 0.95;
-      }
-
-      .card-prof-name {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        font-weight: 500;
-      }
-
-      /* Batch Matrix Inside All View */
-      .batch-matrix-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px;
-        margin-top: 4px;
-      }
-
-      .batch-matrix-item {
-        background: var(--nav-bg);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-sm);
-        padding: 6px 8px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 6px;
-        font-size: 0.74rem;
-      }
-
-      .matrix-batch-badge {
-        font-weight: 800;
-        font-size: 0.72rem;
-        color: var(--accent);
-        background: var(--badge-bg);
-        padding: 2px 6px;
-        border-radius: 4px;
-      }
-
-      .matrix-subj {
-        font-weight: 700;
-        color: var(--text-title);
-        text-align: right;
-      }
-
-      /* Week View Grid */
-      .week-scroll-wrapper {
-        overflow-x: auto;
-        margin: 0 -16px;
-        padding: 0 16px 12px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-
-      .week-scroll-wrapper::-webkit-scrollbar {
-        display: none;
-      }
-
-      .week-grid-container {
-        display: grid;
-        grid-template-columns: 54px repeat(5, 115px);
-        gap: 8px;
-        min-width: max-content;
-      }
-
-      .grid-header-cell {
-        padding: 10px 4px;
-        text-align: center;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: var(--text-dim);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        position: sticky;
-        top: 0;
-        z-index: 5;
-        background: var(--grid-header-bg);
-      }
-
-      .grid-header-cell.is-today {
-        color: var(--accent);
-        background: var(--badge-bg);
-        border-radius: var(--radius-sm);
-      }
-
-      .grid-time-cell {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.65rem;
-        color: var(--text-dim);
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding-right: 8px;
-        font-weight: 500;
-        text-align: right;
-      }
-
-      .grid-slot-cell {
-        background: var(--grid-cell-bg);
-        border: 1px solid var(--grid-cell-border);
-        border-radius: var(--radius-md);
-        padding: 8px 6px;
-        min-height: 56px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2px;
-        position: relative;
-        box-shadow: var(--card-shadow);
-      }
-
-      .grid-slot-cell.is-today {
-        background: var(--grid-cell-today-bg);
-        border-color: var(--grid-cell-today-border);
-      }
-
-      .grid-slot-cell.break-slot {
-        background: transparent;
-        border: 1px dashed var(--card-border);
-        align-items: center;
-        box-shadow: none;
-      }
-
-      .break-text {
-        font-size: 0.6rem;
-        font-weight: 700;
-        color: var(--text-dim);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .grid-subj-code {
-        font-size: 0.76rem;
-        font-weight: 700;
-        color: var(--text-title);
-      }
-
-      .grid-prof-code {
-        font-size: 0.6rem;
-        color: var(--text-muted);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .grid-color-line {
-        height: 2px;
-        width: 100%;
-        border-radius: 2px;
-        margin-top: 3px;
-        background: var(--chip-color);
-      }
-
-      /* ========================================
-       AI CHATBOT VIEW
-       ======================================== */
-      .chatbot-container {
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--card-shadow);
-        display: flex;
-        flex-direction: column;
-        height: 520px;
-        overflow: hidden;
-      }
-
-      .chat-header {
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--card-border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: var(--nav-bg);
-      }
-
-      .chat-header-title {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 700;
-        font-size: 0.88rem;
-        color: var(--text-title);
-      }
-
-      .chat-bot-icon {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: var(--accent);
-        color: #FFFFFF;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.85rem;
-      }
-
-      .chat-quick-chips {
-        padding: 8px 12px;
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        border-bottom: 1px solid var(--card-border);
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .chat-quick-chips::-webkit-scrollbar {
-        display: none;
-      }
-
-      .quick-chip {
-        flex: 0 0 auto;
-        padding: 4px 10px;
-        border-radius: 100px;
-        background: var(--nav-bg);
-        border: 1px solid var(--card-border);
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .quick-chip:hover {
-        background: var(--badge-bg);
-        color: var(--accent);
-        border-color: var(--badge-border);
-      }
-
-      .chat-messages {
-        flex: 1;
-        padding: 14px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .chat-msg {
-        max-width: 88%;
-        padding: 10px 14px;
-        border-radius: 14px;
-        font-size: 0.82rem;
-        line-height: 1.45;
-        animation: fadeIn 0.2s ease;
-      }
-
-      .chat-msg.bot {
-        align-self: flex-start;
-        background: var(--chat-bot-bg);
-        color: var(--chat-bot-text);
-        border: 1px solid var(--chat-bot-border);
-        border-bottom-left-radius: 4px;
-      }
-
-      .chat-msg.user {
-        align-self: flex-end;
-        background: var(--chat-user-bg);
-        color: var(--chat-user-text);
-        border-bottom-right-radius: 4px;
-      }
-
-      .chat-msg a {
-        color: var(--accent);
-        font-weight: 700;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-      }
-
-      .chat-msg.user a {
-        color: #FFFFFF;
-      }
-
-      .chat-msg ul {
-        margin: 6px 0 2px 18px;
-        padding: 0;
-      }
-
-      .chat-msg li {
-        margin-bottom: 4px;
-      }
-
-      .chat-input-row {
-        padding: 10px 12px;
-        border-top: 1px solid var(--card-border);
-        display: flex;
-        gap: 8px;
-        background: var(--card-bg);
-      }
-
-      .chat-input {
-        flex: 1;
-        padding: 10px 14px;
-        border-radius: 100px;
-        border: 1px solid var(--card-border);
-        background: var(--nav-bg);
-        color: var(--text-main);
-        font-family: inherit;
-        font-size: 0.82rem;
-        outline: none;
-      }
-
-      .chat-input:focus {
-        border-color: var(--accent);
-      }
-
-      .chat-send-btn {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        border: none;
-        background: var(--accent);
-        color: #FFFFFF;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: transform 0.15s ease;
-      }
-
-      .chat-send-btn:active {
-        transform: scale(0.9);
-      }
-
-      /* Legend */
-      .legend-card {
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-lg);
-        overflow: hidden;
-        margin-top: 20px;
-        box-shadow: var(--card-shadow);
-      }
-
-      .legend-trigger {
-        width: 100%;
-        padding: 14px 16px;
-        background: transparent;
-        border: none;
-        color: var(--text-main);
-        font-family: inherit;
-        font-size: 0.84rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-      }
-
-      .legend-trigger .icon-chevron {
-        transition: transform 0.3s ease;
-        color: var(--text-muted);
-      }
-
-      .legend-trigger.active .icon-chevron {
-        transform: rotate(180deg);
-      }
-
-      .legend-content {
-        display: none;
-        padding: 0 16px 14px;
-        border-top: 1px solid var(--legend-border);
-      }
-
-      .legend-content.show {
-        display: block;
-      }
-
-      .legend-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 0;
-        border-bottom: 1px solid var(--legend-border);
-      }
-
-      .legend-row:last-child {
-        border-bottom: none;
-      }
-
-      .legend-left {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .legend-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--chip-color);
-      }
-
-      .legend-abbr {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: var(--text-title);
-        min-width: 52px;
-      }
-
-      .legend-full-name {
-        font-size: 0.76rem;
-        color: var(--text-muted);
-      }
-
-      .legend-prof-tag {
-        font-size: 0.68rem;
-        color: var(--text-dim);
-        font-family: 'JetBrains Mono', monospace;
-      }
-
-      .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        background: var(--card-bg);
-        border: 1px dashed var(--card-border);
-        border-radius: var(--radius-lg);
-      }
-
-      .empty-emoji {
-        font-size: 2.2rem;
-        margin-bottom: 8px;
-      }
-
-      .empty-title {
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: var(--text-title);
-      }
-
-      .empty-sub {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        margin-top: 4px;
-      }
-
-      .app-footer {
-        text-align: center;
-        margin-top: auto;
-        padding-top: 28px;
-        font-size: 0.72rem;
-        color: var(--text-dim);
-        font-weight: 500;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="app-viewport">
-      <!-- QUICK ACCESS TIP -->
-      <div class="install-tip-bar" id="installTipBar">
-        <div class="install-tip-text">
-          <span>📲</span>
-          <span>Tip: Tap <b>⋮ (3 dots)</b> &rarr; <b>"Add to Home screen"</b> for easy 1-tap access</span>
-        </div>
-        <button class="install-tip-close" onclick="dismissTip()" aria-label="Dismiss tip">&times;</button>
-      </div>
-
-      <!-- HEADER -->
-      <header class="app-header">
-        <div>
-          <div class="badge-class">SE2</div>
-          <h1 class="title-main">Timetable</h1>
-          <div class="subtitle-main">Second Year Computer Engineering</div>
-        </div>
-        <div class="header-right">
-          <button
-            class="theme-toggle-btn"
-            id="themeToggleBtn"
-            onclick="toggleTheme()"
-            aria-label="Toggle theme"
-          >
-            <!-- Sun Icon (shown in dark mode) -->
-            <svg
-              class="icon-sun"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              style="display: none"
-            >
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <!-- Moon Icon (shown in light mode) -->
-            <svg
-              class="icon-moon"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
-          <div class="header-date-box">
-            <div class="date-day" id="dateDay">MON</div>
-            <div class="date-full" id="dateFull">25 AUG</div>
-          </div>
-        </div>
-      </header>
-
-      <!-- BATCH SELECTOR -->
-      <div class="batch-selector-wrap">
-        <div class="batch-header-row">
-          <span class="batch-selector-label">Batch Selection</span>
-          <span class="batch-current-tag" id="currentBatchTag">Batch: ALL</span>
-        </div>
-        <div class="batch-pills" id="batchPillContainer">
-          <button class="batch-pill active" data-batch="ALL" onclick="setBatch('ALL')">ALL</button>
-          <button class="batch-pill" data-batch="A1" onclick="setBatch('A1')">A1</button>
-          <button class="batch-pill" data-batch="A2" onclick="setBatch('A2')">A2</button>
-          <button class="batch-pill" data-batch="A3" onclick="setBatch('A3')">A3</button>
-          <button class="batch-pill" data-batch="B1" onclick="setBatch('B1')">B1</button>
-          <button class="batch-pill" data-batch="B2" onclick="setBatch('B2')">B2</button>
-          <button class="batch-pill" data-batch="B3" onclick="setBatch('B3')">B3</button>
-          <button class="batch-pill" data-batch="C1" onclick="setBatch('C1')">C1</button>
-          <button class="batch-pill" data-batch="C2" onclick="setBatch('C2')">C2</button>
-          <button class="batch-pill" data-batch="C3" onclick="setBatch('C3')">C3</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SE2 Timetable | Computer Engineering</title>
+  <meta name="description" content="Simple, fast and mobile-friendly timetable for SE2 Computer Engineering students." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* =========================================================
+       CSS VARIABLES & THEME TOKENS
+       ========================================================= */
+    :root {
+      --bg-app: #F8FAFC;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #FFFFFF;
+      --bg-muted: #F1F5F9;
+      --bg-hover: #E2E8F0;
+      
+      --border-subtle: #E2E8F0;
+      --border-strong: #CBD5E1;
+      
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-dim: #94A3B8;
+      
+      --primary: #4F46E5;
+      --primary-light: #EEF2FF;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+      
+      --status-live-bg: #ECFDF5;
+      --status-live-text: #059669;
+      --status-live-border: #A7F3D0;
+      
+      --status-next-bg: #FFFBEB;
+      --status-next-text: #D97706;
+      --status-next-border: #FDE68A;
+      
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+    }
+
+    [data-theme="dark"] {
+      --bg-app: #090D16;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1F2937;
+      --bg-muted: #1E293B;
+      --bg-hover: #334155;
+      
+      --border-subtle: #1E293B;
+      --border-strong: #334155;
+      
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      
+      --primary: #6366F1;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      
+      --status-live-bg: rgba(16, 185, 129, 0.15);
+      --status-live-text: #34D399;
+      --status-live-border: rgba(16, 185, 129, 0.3);
+      
+      --status-next-bg: rgba(245, 158, 11, 0.15);
+      --status-next-text: #FBBF24;
+      --status-next-border: rgba(245, 158, 11, 0.3);
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* =========================================================
+       BASE & RESET
+       ========================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-app);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 12px 14px 40px;
+      line-height: 1.5;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 580px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+    .header {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-badge {
+      background: var(--primary);
+      color: #FFF;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    .header-info h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .header-info p {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn, .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      background: var(--bg-muted);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover, .icon-btn:hover {
+      background: var(--bg-hover);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       BATCH SELECTOR PILLS
+       ========================================================= */
+    .batch-section {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .batch-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .batch-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+    }
+
+    .batch-active-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .batch-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+
+    .batch-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .batch-pill {
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-muted);
+      color: var(--text-muted);
+      padding: 6px 13px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .batch-pill:hover {
+      background: var(--bg-hover);
+      color: var(--text-main);
+    }
+
+    .batch-pill.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    /* =========================================================
+       VIEW NAVIGATION (DAY / WEEK / DIRECTORY)
+       ========================================================= */
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--bg-muted);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      gap: 4px;
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .nav-tab-btn.active {
+      background: var(--bg-surface);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* =========================================================
+       DAY SWITCHER (MON - FRI)
+       ========================================================= */
+    .day-switcher {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-surface);
+      padding: 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 8px 4px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .day-btn .day-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    .day-btn.is-today .day-dot {
+      background: var(--primary);
+    }
+
+    .day-btn:hover {
+      background: var(--bg-muted);
+      color: var(--text-main);
+    }
+
+    .day-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .day-btn.active .day-dot {
+      background: #FFFFFF;
+    }
+
+    /* =========================================================
+       TIMELINE / LECTURE CARDS
+       ========================================================= */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .break-card {
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .break-card span.break-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lecture-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--subject-color, var(--primary));
+    }
+
+    .lecture-card.live-now {
+      border-color: var(--status-live-border);
+      background: var(--status-live-bg);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);
+    }
+
+    .lecture-card.up-next {
+      border-color: var(--status-next-border);
+      background: var(--status-next-bg);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .time-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--bg-muted);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .status-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-badge.live {
+      background: var(--status-live-bg);
+      color: var(--status-live-text);
+      border: 1px solid var(--status-live-border);
+    }
+
+    .status-badge.live .pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.4; }
+    }
+
+    .status-badge.next {
+      background: var(--status-next-bg);
+      color: var(--status-next-text);
+      border: 1px solid var(--status-next-border);
+    }
+
+    .card-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-subject-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-subject-code {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-type-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: #FFF;
+      background: var(--subject-color, var(--primary));
+      text-transform: uppercase;
+    }
+
+    .card-subject-name {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .card-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+    }
+
+    .card-prof {
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-room-badge {
+      background: var(--bg-muted);
+      border: 1px solid var(--border-subtle);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.74rem;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ALL BATCHES MATRIX CARDS */
+    .practical-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .matrix-item {
+      background: var(--bg-muted);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+      border-left: 3px solid var(--matrix-color, #64748B);
+    }
+
+    .matrix-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .matrix-batch {
+      font-weight: 800;
+      font-size: 0.74rem;
+      color: var(--primary);
+    }
+
+    .matrix-room {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-dim);
+    }
+
+    .matrix-subject {
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--text-main);
+    }
+
+    .matrix-prof {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* =========================================================
+       WEEK VIEW (GRID)
+       ========================================================= */
+    .week-view-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .week-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 6px;
+      min-width: 480px;
+    }
+
+    .week-table th {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      padding: 6px 4px;
+      text-align: center;
+    }
+
+    .week-table th.is-today-col {
+      color: var(--primary);
+    }
+
+    .week-table td {
+      vertical-align: top;
+      padding: 0;
+    }
+
+    .week-time-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 8px 4px !important;
+      white-space: nowrap;
+    }
+
+    .week-cell {
+      background: var(--bg-muted);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px;
+      height: 100%;
+      min-height: 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.15s ease;
+      border-left: 3px solid var(--cell-color, #64748B);
+    }
+
+    .week-cell.is-today {
+      background: var(--primary-light);
+    }
+
+    .week-cell-code {
+      font-weight: 800;
+      font-size: 0.76rem;
+      color: var(--text-main);
+    }
+
+    .week-cell-room {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .week-cell-break {
+      text-align: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      padding: 4px;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+
+    /* =========================================================
+       DIRECTORY / ASSISTANT TAB
+       ========================================================= */
+    .directory-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .directory-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .directory-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .directory-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .directory-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--bg-muted);
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+    }
+
+    .directory-item-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .directory-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--item-color, var(--primary));
+    }
+
+    .directory-code {
+      font-weight: 800;
+      color: var(--text-main);
+      min-width: 50px;
+    }
+
+    .directory-name {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .directory-prof {
+      font-weight: 600;
+      color: var(--text-main);
+      text-align: right;
+      font-size: 0.74rem;
+    }
+
+    /* =========================================================
+       ASSISTANT CHAT
+       ========================================================= */
+    .assistant-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chat-messages-wrap {
+      padding: 14px;
+      max-height: 280px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      line-height: 1.45;
+      max-width: 85%;
+    }
+
+    .chat-bubble.bot {
+      background: var(--bg-muted);
+      color: var(--text-main);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-bubble.user {
+      background: var(--primary);
+      color: #FFFFFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-quick-buttons {
+      display: flex;
+      gap: 6px;
+      padding: 8px 14px;
+      overflow-x: auto;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-subtle);
+      scrollbar-width: none;
+    }
+
+    .chat-quick-buttons::-webkit-scrollbar {
+      display: none;
+    }
+
+    .quick-btn {
+      background: var(--bg-muted);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .quick-btn:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .chat-input-bar {
+      display: flex;
+      padding: 10px 14px;
+      border-top: 1px solid var(--border-subtle);
+      gap: 8px;
+      background: var(--bg-surface);
+    }
+
+    .chat-input-bar input {
+      flex: 1;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-muted);
+      padding: 8px 12px;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 0.82rem;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .chat-input-bar input:focus {
+      border-color: var(--primary);
+    }
+
+    .chat-send-btn {
+      background: var(--primary);
+      border: none;
+      color: #FFF;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    .app-footer {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      padding-top: 8px;
+    }
+
+    .app-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 36px 20px;
+      text-align: center;
+    }
+
+    .empty-state h3 {
+      font-size: 1rem;
+      margin: 8px 0 4px;
+      color: var(--text-main);
+    }
+
+    .empty-state p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-brand">
+        <div class="header-badge">SE2</div>
+        <div class="header-info">
+          <h1>Class Timetable</h1>
+          <p id="headerDateStr">Second Year • Computer Engineering</p>
         </div>
       </div>
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+          <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sunIcon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-      <!-- NAVIGATION TABS -->
-      <nav class="nav-segmented">
-        <button
-          class="nav-btn active"
-          id="btnToday"
-          onclick="switchTab('today')"
-        >
-          Today
-        </button>
-        <button class="nav-btn" id="btnWeek" onclick="switchTab('week')">
-          Full Week
-        </button>
-        <button class="nav-btn" id="btnChat" onclick="switchTab('chat')">
-          💬 Assistant
-        </button>
-      </nav>
+    <!-- BATCH SELECTOR -->
+    <section class="batch-section">
+      <div class="batch-header">
+        <span class="batch-title">Select Batch</span>
+        <span class="batch-active-badge" id="activeBatchDisplay">Batch: ALL</span>
+      </div>
+      <div class="batch-scroll" id="batchPills">
+        <button class="batch-pill active" data-batch="ALL" onclick="selectBatch('ALL')">ALL</button>
+        <button class="batch-pill" data-batch="A1" onclick="selectBatch('A1')">A1</button>
+        <button class="batch-pill" data-batch="A2" onclick="selectBatch('A2')">A2</button>
+        <button class="batch-pill" data-batch="A3" onclick="selectBatch('A3')">A3</button>
+        <button class="batch-pill" data-batch="B1" onclick="selectBatch('B1')">B1</button>
+        <button class="batch-pill" data-batch="B2" onclick="selectBatch('B2')">B2</button>
+        <button class="batch-pill" data-batch="B3" onclick="selectBatch('B3')">B3</button>
+        <button class="batch-pill" data-batch="C1" onclick="selectBatch('C1')">C1</button>
+        <button class="batch-pill" data-batch="C2" onclick="selectBatch('C2')">C2</button>
+        <button class="batch-pill" data-batch="C3" onclick="selectBatch('C3')">C3</button>
+      </div>
+    </section>
 
-      <!-- TODAY VIEW -->
-      <main id="viewToday" class="view-section active">
-        <div class="timeline-container" id="todayContainer">
-          <!-- Rendered by JS -->
+    <!-- VIEW TABS -->
+    <nav class="nav-tabs">
+      <button class="nav-tab-btn active" id="tabDayBtn" onclick="switchView('day')">
+        <span>📅</span> Daily Schedule
+      </button>
+      <button class="nav-tab-btn" id="tabWeekBtn" onclick="switchView('week')">
+        <span>📊</span> Weekly Grid
+      </button>
+      <button class="nav-tab-btn" id="tabInfoBtn" onclick="switchView('info')">
+        <span>💬</span> Faculty & Q&A
+      </button>
+    </nav>
+
+    <!-- VIEW: DAY SCHEDULE -->
+    <main id="dayView">
+      <!-- DAY SWITCHER -->
+      <div class="day-switcher" id="daySwitcher">
+        <button class="day-btn" data-day="1" onclick="selectDay(1)">
+          <span>Mon</span>
+          <span class="day-dot"></span>
+        </button>
+        <button class="day-btn" data-day="2" onclick="selectDay(2)">
+          <span>Tue</span>
+          <span class="day-dot"></span>
+        </button>
+        <button class="day-btn" data-day="3" onclick="selectDay(3)">
+          <span>Wed</span>
+          <span class="day-dot"></span>
+        </button>
+        <button class="day-btn" data-day="4" onclick="selectDay(4)">
+          <span>Thu</span>
+          <span class="day-dot"></span>
+        </button>
+        <button class="day-btn" data-day="5" onclick="selectDay(5)">
+          <span>Fri</span>
+          <span class="day-dot"></span>
+        </button>
+      </div>
+
+      <!-- TIMELINE LIST -->
+      <div class="timeline" id="timelineContainer" style="margin-top: 12px;">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </main>
+
+    <!-- VIEW: WEEKLY GRID -->
+    <main id="weekView" style="display: none;">
+      <div class="week-view-wrapper">
+        <table class="week-table" id="weekTable">
+          <!-- Rendered by JavaScript -->
+        </table>
+      </div>
+    </main>
+
+    <!-- VIEW: FACULTY & ASSISTANT -->
+    <main id="infoView" style="display: none;">
+      <div class="directory-container">
+        
+        <!-- SUBJECT & FACULTY DIRECTORY -->
+        <div class="directory-card">
+          <div class="directory-title">
+            <span>👨‍🏫</span> SE2 Subjects & Faculty
+          </div>
+          <div class="directory-list" id="directoryList">
+            <!-- Rendered by JavaScript -->
+          </div>
         </div>
-      </main>
 
-      <!-- WEEK VIEW -->
-      <main id="viewWeek" class="view-section">
-        <div class="week-scroll-wrapper">
-          <div class="week-grid-container" id="weekContainer">
-            <!-- Rendered by JS -->
+        <!-- QUICK ASSISTANT CHAT -->
+        <div class="assistant-box">
+          <div class="directory-title" style="padding: 14px 14px 0;">
+            <span>⚡</span> Timetable Assistant
           </div>
-        </div>
-      </main>
-
-      <!-- CHATBOT VIEW -->
-      <main id="viewChat" class="view-section">
-        <div class="chatbot-container">
-          <div class="chat-header">
-            <div class="chat-header-title">
-              <div class="chat-bot-icon">⚡</div>
-              <span>Timetable Assistant</span>
-            </div>
-            <span class="batch-current-tag" id="chatBatchIndicator">Batch: ALL</span>
-          </div>
-          <div class="chat-quick-chips">
-            <button class="quick-chip" onclick="sendQuickPrompt('What is my next class?')">⏰ Next class?</button>
-            <button class="quick-chip" onclick="sendQuickPrompt('What is today\'s schedule?')">📅 Today's schedule</button>
-            <button class="quick-chip" onclick="sendQuickPrompt('When is DS Lab?')">💻 When is DS Lab?</button>
-            <button class="quick-chip" onclick="sendQuickPrompt('Who teaches OS?')">👨‍🏫 Who teaches OS?</button>
-            <button class="quick-chip" onclick="sendQuickPrompt('Who built this website?')">👨‍💻 About Developer</button>
-          </div>
-          <div class="chat-messages" id="chatMessages">
-            <div class="chat-msg bot">
-              👋 Hi! I'm your SE2 Timetable Assistant. Ask me anything about your lectures, lab allocations, faculty, breaks, or about the project developer!
+          <div class="chat-messages-wrap" id="chatMessages">
+            <div class="chat-bubble bot">
+              👋 Hi! Ask me anything about your SE2 schedule, next class, teacher names, or batch lab rooms.
             </div>
           </div>
-          <div class="chat-input-row">
-            <input
-              type="text"
-              id="chatInput"
-              class="chat-input"
-              placeholder="Ask about a class, day, batch, prof, or developer..."
-              onkeydown="if(event.key==='Enter') sendChatMessage()"
-            />
-            <button class="chat-send-btn" onclick="sendChatMessage()" aria-label="Send message">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <div class="chat-quick-buttons">
+            <button class="quick-btn" onclick="askBot('What is my next class?')">⏰ Next class?</button>
+            <button class="quick-btn" onclick="askBot('Today\'s schedule')">📅 Today's schedule</button>
+            <button class="quick-btn" onclick="askBot('When is DS Lab?')">💻 When is DS Lab?</button>
+            <button class="quick-btn" onclick="askBot('Who teaches OS?')">👨‍🏫 Who teaches OS?</button>
+            <button class="quick-btn" onclick="askBot('Break timings')">☕ Break timings</button>
+          </div>
+          <div class="chat-input-bar">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChat()" />
+            <button class="chat-send-btn" onclick="sendChat()" aria-label="Send">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
             </button>
           </div>
         </div>
-      </main>
 
-      <!-- SUBJECT LEGEND -->
-      <section class="legend-card">
-        <button
-          class="legend-trigger"
-          id="legendTrigger"
-          onclick="toggleLegend()"
-        >
-          <span>Subject Directory</span>
-          <svg
-            class="icon-chevron"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </button>
-        <div class="legend-content" id="legendContent">
-          <!-- Rendered by JS -->
-        </div>
-      </section>
+      </div>
+    </main>
 
-      <!-- FOOTER -->
-      <footer class="app-footer">
-        Built for SE2 &bull; Computer Engineering
-      </footer>
-    </div>
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      SE2 Computer Engineering Timetable • Built for easy access
+    </footer>
 
-    <script>
-      // MASTER TIMETABLE DATA (WITHOUT UNCONFIRMED ROOM LOCATIONS)
-      const SCHEDULE_DATA = {
-  "1": {
-    "1": {
-      "type": "theory",
-      "se2": {
-        "code": "DS",
-        "badge": "Data Structures",
-        "prof": "Prof. Alka Kumbhar",
-        "color": "#3B82F6",
-        "isLab": false,
-        "isLibrary": false
+  </div>
+
+  <!-- =========================================================
+       TIMETABLE DATA & JAVASCRIPT ENGINE
+       ========================================================= -->
+  <script>
+    // 1. SUBJECTS & FACULTY DIRECTORY
+    const SUBJECTS = {
+      DS: { 
+        full: "Data Structures", 
+        color: "#3B82F6", 
+        prof: "Prof. Alka Kumbhar (AAK)",
+        room: "E202"
       },
-      "se1": {
-        "code": "OS",
-        "badge": "Operating Systems",
-        "prof": "Prof. Mahesh Swami",
-        "color": "#8B5CF6",
-        "isLab": false,
-        "isLibrary": false
+      OS: { 
+        full: "Operating Systems", 
+        color: "#8B5CF6", 
+        prof: "Prof. Smita Sapkal (SS)",
+        room: "E202"
       },
-      "batches": {
-        "A1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "2": {
-      "type": "theory",
-      "se2": {
-        "code": "OS",
-        "badge": "Operating Systems",
-        "prof": "Prof. Smita Sapkal",
-        "color": "#8B5CF6",
-        "isLab": false,
-        "isLibrary": false
+      OOPCG: { 
+        full: "Object Oriented Programming & Computer Graphics", 
+        color: "#EC4899", 
+        prof: "Prof. Ashvini Kheole (APK)",
+        room: "E202"
       },
-      "se1": {
-        "code": "OOPCG",
-        "badge": "OOP & Computer Graphics",
-        "prof": "Prof. Kalyani Zore",
-        "color": "#EC4899",
-        "isLab": false,
-        "isLibrary": false
+      DELD: { 
+        full: "Digital Electronics & Logic Design", 
+        color: "#F97316", 
+        prof: "Prof. Smita Kathar (SK)",
+        room: "E202"
       },
-      "batches": {
-        "A1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        }
+      UHV: { 
+        full: "Universal Human Values", 
+        color: "#14B8A6", 
+        prof: "Prof. Neelam Jadhav (NJ)",
+        room: "E202"
+      },
+      DM: { 
+        full: "Discrete Mathematics", 
+        color: "#6366F1", 
+        prof: "Dr. Maya Jadhav (Dr. MJ)",
+        room: "Common Room"
+      },
+      ED: { 
+        full: "Engineering Design", 
+        color: "#F59E0B", 
+        prof: "Prof. Nilam Naidu (NN)",
+        room: "Common Room"
+      },
+      CEP: { 
+        full: "Community Engagement Project", 
+        color: "#10B981", 
+        prof: "Faculty Coordinator",
+        room: "Assigned Room"
+      },
+      LIB: { 
+        full: "Library / Self-Study", 
+        color: "#64748B", 
+        prof: "Self-Study",
+        room: "Library"
       }
-    },
-    "3": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
+    };
+
+    const BATCHES = ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"];
+    const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const DAY_SHORT = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+    // 2. DAILY TIME SLOTS
+    const SLOTS = [
+      { id: 1, label: "09:00 - 10:00 AM", start: "09:00", end: "10:00", startMin: 540, endMin: 600, duration: "1 hr" },
+      { id: 2, label: "10:00 - 11:00 AM", start: "10:00", end: "11:00", startMin: 600, endMin: 660, duration: "1 hr" },
+      { id: "break1", isBreak: true, label: "Short Break", time: "11:00 - 11:15 AM", startMin: 660, endMin: 675, duration: "15 min" },
+      { id: 3, label: "11:15 - 12:15 PM", start: "11:15", end: "12:15", startMin: 675, endMin: 735, duration: "1 hr" },
+      { id: 4, label: "12:15 - 01:15 PM", start: "12:15", end: "13:15", startMin: 735, endMin: 795, duration: "1 hr" },
+      { id: "break2", isBreak: true, label: "Lunch Break", time: "01:15 - 01:45 PM", startMin: 795, endMin: 825, duration: "30 min" },
+      { id: 5, label: "01:45 - 02:45 PM", start: "13:45", end: "14:45", startMin: 825, endMin: 885, duration: "1 hr" },
+      { id: 6, label: "02:45 - 03:45 PM", start: "14:45", end: "15:45", startMin: 885, endMin: 945, duration: "1 hr" }
+    ];
+
+    // 3. MASTER SE2 SCHEDULE (EXTRACTED PRECISELY FROM OFFICIAL TIMETABLE)
+    const SE2_SCHEDULE = {
+      // 1: MONDAY
+      1: {
+        1: { type: "theory", code: "DS", name: "Data Structures", prof: "Prof. Alka Kumbhar (AAK)", room: "E202", color: SUBJECTS.DS.color },
+        2: { type: "theory", code: "OS", name: "Operating Systems", prof: "Prof. Smita Sapkal (SS)", room: "E202", color: SUBJECTS.OS.color },
+        // Slots 3 & 4 (11:15 AM - 1:15 PM) -> 2-hour Practical Lab Session
+        "3-4": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "11:15 AM - 01:15 PM (2 hrs)",
+          batches: {
+            A1: { code: "DS Lab", prof: "Prof. Nilima Patil", room: "Lab A101", color: SUBJECTS.DS.color },
+            A2: { code: "CEP", prof: "Prof. Shreya Nehe", room: "Room A101B", color: SUBJECTS.CEP.color },
+            A3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            B1: { code: "CEP", prof: "Prof. Smita Kathar", room: "Room A204", color: SUBJECTS.CEP.color },
+            B2: { code: "OOPCG Lab", prof: "Prof. Ashvini Kheole", room: "Lab A102", color: SUBJECTS.OOPCG.color },
+            B3: { code: "DS Lab", prof: "Prof. Alka Kumbhar", room: "Lab A106A", color: SUBJECTS.DS.color },
+            C1: { code: "DS Lab", prof: "Prof. Smita Sapkal", room: "Lab A106B", color: SUBJECTS.DS.color },
+            C2: { code: "CEP", prof: "Prof. Jagruti Zope", room: "Room A105", color: SUBJECTS.CEP.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
         },
-        "A2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Shreya Nehe",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Kathar",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Jagruti Zope",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
+        // Slots 5 & 6 (1:45 PM - 3:45 PM) -> 2-hour Practical Lab Session
+        "5-6": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "01:45 PM - 03:45 PM (2 hrs)",
+          batches: {
+            A1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A2: { code: "DS Lab", prof: "Prof. Nilima Patil", room: "Lab A101A", color: SUBJECTS.DS.color },
+            A3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            B1: { code: "DS Lab", prof: "Prof. Alka Kumbhar", room: "Lab A106A", color: SUBJECTS.DS.color },
+            B2: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            B3: { code: "CEP", prof: "Prof. Mahesh Swami", room: "Room A104", color: SUBJECTS.CEP.color },
+            C1: { code: "CEP", prof: "Prof. Neelam Jadhav", room: "Room A104", color: SUBJECTS.CEP.color },
+            C2: { code: "DS Lab", prof: "Prof. Smita Sapkal", room: "Lab A106B", color: SUBJECTS.DS.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
         }
+      },
+
+      // 2: TUESDAY
+      2: {
+        1: { type: "theory", code: "OS", name: "Operating Systems", prof: "Prof. Smita Sapkal (SS)", room: "E202", color: SUBJECTS.OS.color },
+        2: { type: "theory", code: "OOPCG", name: "OOP & Computer Graphics", prof: "Prof. Ashvini Kheole (APK)", room: "E202", color: SUBJECTS.OOPCG.color },
+        3: { type: "theory", code: "DS", name: "Data Structures", prof: "Prof. Alka Kumbhar (AAK)", room: "E202", color: SUBJECTS.DS.color },
+        4: { type: "theory", code: "DELD", name: "Digital Electronics & Logic", prof: "Prof. Smita Kathar (SK)", room: "E202", color: SUBJECTS.DELD.color },
+        // Slots 5 & 6 (1:45 PM - 3:45 PM) -> 2-hour Practical Lab Session
+        "5-6": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "01:45 PM - 03:45 PM (2 hrs)",
+          batches: {
+            A1: { code: "DS Lab", prof: "Prof. Nilima Patil", room: "Lab A101A", color: SUBJECTS.DS.color },
+            A2: { code: "OOPCG Lab", prof: "Prof. Kalyani Zore", room: "Lab A105", color: SUBJECTS.OOPCG.color },
+            A3: { code: "DS Lab", prof: "Prof. Nilima Patil", room: "Lab A101B", color: SUBJECTS.DS.color },
+            B1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            B2: { code: "DS Lab", prof: "Prof. Alka Kumbhar", room: "Lab A106A", color: SUBJECTS.DS.color },
+            B3: { code: "OOPCG Lab", prof: "Prof. Ashvini Kheole", room: "Lab A102", color: SUBJECTS.OOPCG.color },
+            C1: { code: "DS Lab", prof: "Prof. Smita Sapkal", room: "Lab A106B", color: SUBJECTS.DS.color },
+            C2: { code: "CEP", prof: "Prof. Jagruti Zope", room: "Room A103", color: SUBJECTS.CEP.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
+        }
+      },
+
+      // 3: WEDNESDAY
+      3: {
+        1: { type: "theory", code: "OS", name: "Operating Systems", prof: "Prof. Smita Sapkal (SS)", room: "E202", color: SUBJECTS.OS.color },
+        2: { type: "theory", code: "OOPCG", name: "OOP & Computer Graphics", prof: "Prof. Ashvini Kheole (APK)", room: "E202", color: SUBJECTS.OOPCG.color },
+        // Slots 3 & 4 (11:15 AM - 1:15 PM) -> 2-hour Practical Lab Session
+        "3-4": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "11:15 AM - 01:15 PM (2 hrs)",
+          batches: {
+            A1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A2: { code: "DS Lab", prof: "Prof. Nilima Patil", room: "Lab A101", color: SUBJECTS.DS.color },
+            A3: { code: "OOPCG Lab", prof: "Prof. Kalyani Zore", room: "Lab A105", color: SUBJECTS.OOPCG.color },
+            B1: { code: "CEP", prof: "Prof. Smita Kathar", room: "Room A204", color: SUBJECTS.CEP.color },
+            B2: { code: "DS Lab", prof: "Prof. Alka Kumbhar", room: "Lab A106B", color: SUBJECTS.DS.color },
+            B3: { code: "CEP", prof: "Prof. Mahesh Swami", room: "Room A104", color: SUBJECTS.CEP.color },
+            C1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C2: { code: "OOPCG Lab", prof: "Prof. Ashvini Kheole", room: "Lab A102", color: SUBJECTS.OOPCG.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
+        },
+        5: { type: "theory", code: "DM", name: "Discrete Mathematics", prof: "Dr. Maya Jadhav (Dr. MJ)", room: "Common Room", color: SUBJECTS.DM.color },
+        6: { type: "theory", code: "ED", name: "Engineering Design", prof: "Prof. Nilam Naidu (NN)", room: "Common Room", color: SUBJECTS.ED.color }
+      },
+
+      // 4: THURSDAY
+      4: {
+        1: { type: "theory", code: "OOPCG", name: "OOP & Computer Graphics", prof: "Prof. Ashvini Kheole (APK)", room: "E202", color: SUBJECTS.OOPCG.color },
+        2: { type: "theory", code: "DELD", name: "Digital Electronics & Logic", prof: "Prof. Smita Kathar (SK)", room: "E202", color: SUBJECTS.DELD.color },
+        // Slots 3 & 4 (11:15 AM - 1:15 PM) -> 2-hour Practical Lab Session
+        "3-4": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "11:15 AM - 01:15 PM (2 hrs)",
+          batches: {
+            A1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A2: { code: "CEP", prof: "Prof. Shreya Nehe", room: "Room A101B", color: SUBJECTS.CEP.color },
+            A3: { code: "DS Lab", prof: "Prof. Nilima Patil", room: "Lab A101A", color: SUBJECTS.DS.color },
+            B1: { code: "OOPCG Lab", prof: "Prof. Kalyani Zore", room: "Lab A105", color: SUBJECTS.OOPCG.color },
+            B2: { code: "CEP", prof: "Prof. Mahesh Swami", room: "Room A104", color: SUBJECTS.CEP.color },
+            B3: { code: "DS Lab", prof: "Prof. Alka Kumbhar", room: "Lab A106B", color: SUBJECTS.DS.color },
+            C1: { code: "OOPCG Lab", prof: "Prof. Ashvini Kheole", room: "Lab A102", color: SUBJECTS.OOPCG.color },
+            C2: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
+        },
+        // Slots 5 & 6 (1:45 PM - 3:45 PM) -> 2-hour Practical Lab Session
+        "5-6": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "01:45 PM - 03:45 PM (2 hrs)",
+          batches: {
+            A1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A2: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A3: { code: "CEP", prof: "Prof. Nilima Patil", room: "Room A101A", color: SUBJECTS.CEP.color },
+            B1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            B2: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            B3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C2: { code: "DS Lab", prof: "Prof. Smita Sapkal", room: "Lab A106A", color: SUBJECTS.DS.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
+        }
+      },
+
+      // 5: FRIDAY
+      5: {
+        1: { type: "theory", code: "UHV", name: "Universal Human Values", prof: "Prof. Neelam Jadhav (NJ)", room: "E202", color: SUBJECTS.UHV.color },
+        2: { type: "theory", code: "DS", name: "Data Structures", prof: "Prof. Alka Kumbhar (AAK)", room: "E202", color: SUBJECTS.DS.color },
+        // Slots 3 & 4 (11:15 AM - 1:15 PM) -> 2-hour Practical Lab Session
+        "3-4": {
+          type: "practical",
+          name: "Practical Lab Session",
+          timeLabel: "11:15 AM - 01:15 PM (2 hrs)",
+          batches: {
+            A1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A2: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            A3: { code: "CEP", prof: "Prof. Nilima Patil", room: "Room A105", color: SUBJECTS.CEP.color },
+            B1: { code: "DS Lab", prof: "Prof. Alka Kumbhar", room: "Lab A106A", color: SUBJECTS.DS.color },
+            B2: { code: "CEP", prof: "Prof. Mahesh Swami", room: "Room A104", color: SUBJECTS.CEP.color },
+            B3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C1: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C2: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color },
+            C3: { code: "Library", prof: "Self-Study", room: "Library", color: SUBJECTS.LIB.color }
+          }
+        },
+        5: { type: "theory", code: "DM", name: "Discrete Mathematics", prof: "Dr. Maya Jadhav (Dr. MJ)", room: "Common Room", color: SUBJECTS.DM.color },
+        6: { type: "theory", code: "ED", name: "Engineering Design", prof: "Prof. Nilam Naidu (NN)", room: "Common Room", color: SUBJECTS.ED.color }
       }
-    },
-    "4": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Shreya Nehe",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Kathar",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Jagruti Zope",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "5": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "6": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
+    };
+
+    // 4. APP STATE
+    let currentBatch = localStorage.getItem("se2_batch") || "ALL";
+    let selectedDay = getInitialDay();
+    let currentView = "day";
+
+    function getInitialDay() {
+      const d = new Date().getDay();
+      return (d >= 1 && d <= 5) ? d : 1; // Default Monday on weekends
+    }
+
+    function getNowMin() {
+      const d = new Date();
+      return d.getHours() * 60 + d.getMinutes();
+    }
+
+    // 5. THEME MANAGEMENT
+    function initTheme() {
+      const saved = localStorage.getItem("se2_theme") || "light";
+      document.documentElement.setAttribute("data-theme", saved);
+      updateThemeIcon(saved);
+    }
+
+    function toggleTheme() {
+      const curr = document.documentElement.getAttribute("data-theme") || "light";
+      const next = curr === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("se2_theme", next);
+      updateThemeIcon(next);
+    }
+
+    function updateThemeIcon(theme) {
+      const sun = document.getElementById("sunIcon");
+      const moon = document.getElementById("moonIcon");
+      if (theme === "dark") {
+        sun.style.display = "block";
+        moon.style.display = "none";
+      } else {
+        sun.style.display = "none";
+        moon.style.display = "block";
       }
     }
-  },
-  "2": {
-    "1": {
-      "type": "theory",
-      "se2": {
-        "code": "OS",
-        "badge": "Operating Systems",
-        "prof": "Prof. Smita Sapkal",
-        "color": "#8B5CF6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DS",
-        "badge": "Data Structures",
-        "prof": "Prof. Nilima Patil",
-        "color": "#3B82F6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "2": {
-      "type": "theory",
-      "se2": {
-        "code": "OOPCG",
-        "badge": "OOP & Computer Graphics",
-        "prof": "Prof. Ashvini Kheole",
-        "color": "#EC4899",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "OOPCG",
-        "badge": "OOP & Computer Graphics",
-        "prof": "Prof. Kalyani Zore",
-        "color": "#EC4899",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "3": {
-      "type": "theory",
-      "se2": {
-        "code": "DS",
-        "badge": "Data Structures",
-        "prof": "Prof. Alka Kumbhar",
-        "color": "#3B82F6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DELD",
-        "badge": "Digital Electronics & Logic",
-        "prof": "Prof. Smita Kathar",
-        "color": "#F97316",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "4": {
-      "type": "theory",
-      "se2": {
-        "code": "DELD",
-        "badge": "Digital Electronics & Logic",
-        "prof": "Prof. Smita Kathar",
-        "color": "#F97316",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "OS",
-        "badge": "Operating Systems",
-        "prof": "Prof. Mahesh Swami",
-        "color": "#8B5CF6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "5": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Jagruti Zope",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "6": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Jagruti Zope",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
+
+    // 6. BATCH SELECTION
+    function selectBatch(batch) {
+      currentBatch = batch;
+      localStorage.setItem("se2_batch", batch);
+      document.getElementById("activeBatchDisplay").textContent = `Batch: ${batch}`;
+      document.querySelectorAll(".batch-pill").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-batch") === batch);
+      });
+      renderDayTimeline();
+      renderWeekGrid();
     }
-  },
-  "3": {
-    "1": {
-      "type": "theory",
-      "se2": {
-        "code": "OS",
-        "badge": "Operating Systems",
-        "prof": "Prof. Smita Sapkal",
-        "color": "#8B5CF6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "OOPCG",
-        "badge": "OOP & Computer Graphics",
-        "prof": "Prof. Kalyani Zore",
-        "color": "#EC4899",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "2": {
-      "type": "theory",
-      "se2": {
-        "code": "OOPCG",
-        "badge": "OOP & Computer Graphics",
-        "prof": "Prof. Ashvini Kheole",
-        "color": "#EC4899",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DS",
-        "badge": "Data Structures",
-        "prof": "Prof. Nilima Patil",
-        "color": "#3B82F6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "3": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Kathar",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "4": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Kathar",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "5": {
-      "type": "theory",
-      "se2": {
-        "code": "DM",
-        "badge": "Discrete Mathematics",
-        "prof": "Dr. Maya Jadhav",
-        "color": "#6366F1",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DM",
-        "badge": "Discrete Mathematics",
-        "prof": "Dr. Maya Jadhav",
-        "color": "#6366F1",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "6": {
-      "type": "theory",
-      "se2": {
-        "code": "ED",
-        "badge": "Engineering Design",
-        "prof": "Prof. Nilam Naidu",
-        "color": "#F59E0B",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "ED",
-        "badge": "Engineering Design",
-        "prof": "Prof. Nilam Naidu",
-        "color": "#F59E0B",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
+
+    // 7. DAY SELECTION
+    function selectDay(dayNum) {
+      selectedDay = dayNum;
+      document.querySelectorAll(".day-btn").forEach(btn => {
+        btn.classList.toggle("active", parseInt(btn.getAttribute("data-day"), 10) === dayNum);
+      });
+      renderDayTimeline();
     }
-  },
-  "4": {
-    "1": {
-      "type": "theory",
-      "se2": {
-        "code": "OOPCG",
-        "badge": "OOP & Computer Graphics",
-        "prof": "Prof. Ashvini Kheole",
-        "color": "#EC4899",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DELD",
-        "badge": "Digital Electronics & Logic",
-        "prof": "Prof. Smita Kathar",
-        "color": "#F97316",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "2": {
-      "type": "theory",
-      "se2": {
-        "code": "DELD",
-        "badge": "Digital Electronics & Logic",
-        "prof": "Prof. Smita Kathar",
-        "color": "#F97316",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DS",
-        "badge": "Data Structures",
-        "prof": "Prof. Nilima Patil",
-        "color": "#3B82F6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DELD",
-          "badge": "Digital Electronics & Logic",
-          "prof": "Prof. Smita Kathar",
-          "color": "#F97316",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "3": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Shreya Nehe",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "4": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Shreya Nehe",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DS LAB",
-          "badge": "Data Structures Lab",
-          "prof": "Prof. Nilima Patil",
-          "color": "#3B82F6",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Kalyani Zore",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "OOPCG",
-          "badge": "OOP & Computer Graphics",
-          "prof": "Prof. Ashvini Kheole",
-          "color": "#EC4899",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "5": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Nilima Patil",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "6": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Nilima Patil",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "B3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C1": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
+
+    // 8. VIEW SWITCHING
+    function switchView(view) {
+      currentView = view;
+      document.getElementById("tabDayBtn").classList.toggle("active", view === "day");
+      document.getElementById("tabWeekBtn").classList.toggle("active", view === "week");
+      document.getElementById("tabInfoBtn").classList.toggle("active", view === "info");
+
+      document.getElementById("dayView").style.display = view === "day" ? "block" : "none";
+      document.getElementById("weekView").style.display = view === "week" ? "block" : "none";
+      document.getElementById("infoView").style.display = view === "info" ? "block" : "none";
     }
-  },
-  "5": {
-    "1": {
-      "type": "theory",
-      "se2": {
-        "code": "UHV",
-        "badge": "Universal Human Values",
-        "prof": "Prof. Neelam Jadhav",
-        "color": "#14B8A6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "OS",
-        "badge": "Operating Systems",
-        "prof": "Prof. Mahesh Swami",
-        "color": "#8B5CF6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "OS",
-          "badge": "Operating Systems",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#8B5CF6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "2": {
-      "type": "theory",
-      "se2": {
-        "code": "DS",
-        "badge": "Data Structures",
-        "prof": "Prof. Alka Kumbhar",
-        "color": "#3B82F6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "UHV",
-        "badge": "Universal Human Values",
-        "prof": "Prof. Snehal Jagtap",
-        "color": "#14B8A6",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Snehal Jagtap",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Snehal Jagtap",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Snehal Jagtap",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "UHV",
-          "badge": "Universal Human Values",
-          "prof": "Prof. Snehal Jagtap",
-          "color": "#14B8A6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "3": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Nilima Patil",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "4": {
-      "type": "practical",
-      "batches": {
-        "A1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Smita Sapkal",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "A3": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Nilima Patil",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DS",
-          "badge": "Data Structures",
-          "prof": "Prof. Alka Kumbhar",
-          "color": "#3B82F6",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Mahesh Swami",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C1": {
-          "code": "CEP",
-          "badge": "Community Engagement Project",
-          "prof": "Prof. Neelam Jadhav",
-          "color": "#10B981",
-          "isLab": true,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        },
-        "C3": {
-          "code": "LIB",
-          "badge": "Library / Self-Study",
-          "prof": "",
-          "color": "#64748B",
-          "isLab": false,
-          "isLibrary": true
-        }
-      }
-    },
-    "5": {
-      "type": "theory",
-      "se2": {
-        "code": "DM",
-        "badge": "Discrete Mathematics",
-        "prof": "Dr. Maya Jadhav",
-        "color": "#6366F1",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "DM",
-        "badge": "Discrete Mathematics",
-        "prof": "Dr. Maya Jadhav",
-        "color": "#6366F1",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "DM",
-          "badge": "Discrete Mathematics",
-          "prof": "Dr. Maya Jadhav",
-          "color": "#6366F1",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    },
-    "6": {
-      "type": "theory",
-      "se2": {
-        "code": "ED",
-        "badge": "Engineering Design",
-        "prof": "Prof. Nilam Naidu",
-        "color": "#F59E0B",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "se1": {
-        "code": "ED",
-        "badge": "Engineering Design",
-        "prof": "Prof. Nilam Naidu",
-        "color": "#F59E0B",
-        "isLab": false,
-        "isLibrary": false
-      },
-      "batches": {
-        "A1": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A2": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "A3": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B1": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B2": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "B3": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C1": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C2": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        },
-        "C3": {
-          "code": "ED",
-          "badge": "Engineering Design",
-          "prof": "Prof. Nilam Naidu",
-          "color": "#F59E0B",
-          "isLab": false,
-          "isLibrary": false
-        }
-      }
-    }
-  }
-};
 
-      const SUBJECTS = {
-        DS: { full: "Data Structures", prof: "Prof. Alka Kumbhar / Nilima Patil / Smita Sapkal", color: "#3B82F6" },
-        "DS LAB": { full: "Data Structures Lab", prof: "Prof. Alka Kumbhar / Nilima Patil / Smita Sapkal", color: "#3B82F6" },
-        OS: { full: "Operating Systems", prof: "Prof. Smita Sapkal / Mahesh Swami", color: "#8B5CF6" },
-        OOPCG: { full: "OOP & Computer Graphics", prof: "Prof. Ashvini Kheole / Kalyani Zore", color: "#EC4899" },
-        "OOPCG LAB": { full: "OOP & Computer Graphics Lab", prof: "Prof. Ashvini Kheole / Kalyani Zore", color: "#EC4899" },
-        DELD: { full: "Digital Electronics & Logic", prof: "Prof. Smita Kathar", color: "#F97316" },
-        UHV: { full: "Universal Human Values", prof: "Prof. Neelam Jadhav / Snehal Jagtap", color: "#14B8A6" },
-        CEP: { full: "Community Engagement Project", prof: "Various Faculty", color: "#10B981" },
-        DM: { full: "Discrete Mathematics (OE)", prof: "Dr. Maya Jadhav", color: "#6366F1" },
-        ED: { full: "Engineering Design", prof: "Prof. Nilam Naidu", color: "#F59E0B" },
-        LIB: { full: "Library / Self-Study", prof: "Self-Study", color: "#64748B" },
-        FREE: { full: "Free Slot", prof: "", color: "" }
-      };
+    // 9. RENDER DAY TIMELINE
+    function renderDayTimeline() {
+      const container = document.getElementById("timelineContainer");
+      const dayData = SE2_SCHEDULE[selectedDay];
+      const todayNum = new Date().getDay();
+      const isViewingToday = (selectedDay === todayNum);
+      const nowMin = getNowMin();
 
-      const DAY_NAMES = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ];
-      const DAY_ABBRS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-      const BATCHES = ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"];
-
-      let currentBatch = localStorage.getItem("selected_batch") || "ALL";
-
-      const SLOTS = [
-        { id: 1, start: "09:00", end: "10:00", startMin: 540, endMin: 600 },
-        { id: 2, start: "10:00", end: "11:00", startMin: 600, endMin: 660 },
-        null, // Short Break
-        { id: 3, start: "11:15", end: "12:15", startMin: 675, endMin: 735 },
-        { id: 4, start: "12:15", end: "13:15", startMin: 735, endMin: 795 },
-        null, // Lunch Break
-        { id: 5, start: "13:45", end: "14:45", startMin: 825, endMin: 885 },
-        { id: 6, start: "14:45", end: "15:45", startMin: 885, endMin: 945 },
-      ];
-
-      const BREAKS = [
-        { label: "Short Break", range: "11:00 - 11:15" },
-        { label: "Lunch Break", range: "13:15 - 13:45" },
-      ];
-
-      // THEME
-      function initTheme() {
-        const savedTheme = localStorage.getItem("theme") || "light";
-        applyTheme(savedTheme);
-      }
-
-      function applyTheme(theme) {
-        document.documentElement.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-        const sunIcon = document.querySelector(".icon-sun");
-        const moonIcon = document.querySelector(".icon-moon");
-        if (theme === "dark") {
-          sunIcon.style.display = "block";
-          moonIcon.style.display = "none";
-        } else {
-          sunIcon.style.display = "none";
-          moonIcon.style.display = "block";
-        }
-      }
-
-      function toggleTheme() {
-        const current = document.documentElement.getAttribute("data-theme") || "light";
-        applyTheme(current === "light" ? "dark" : "light");
-      }
-
-      // BATCH
-      function setBatch(batch) {
-        currentBatch = batch;
-        localStorage.setItem("selected_batch", batch);
-        updateBatchUI();
-        renderToday();
-        renderWeek();
-      }
-
-      function updateBatchUI() {
-        document.querySelectorAll(".batch-pill").forEach((btn) => {
-          btn.classList.toggle("active", btn.getAttribute("data-batch") === currentBatch);
-        });
-        document.getElementById("currentBatchTag").textContent = `Batch: ${currentBatch}`;
-        const chatInd = document.getElementById("chatBatchIndicator");
-        if (chatInd) chatInd.textContent = `Batch: ${currentBatch}`;
-      }
-
-      // UTILS
-      function getNowSec() {
-        const d = new Date();
-        return d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
-      }
-
-      function getNowMin() {
-        return Math.floor(getNowSec() / 60);
-      }
-
-      function formatTime12(timeStr) {
-        const [h, m] = timeStr.split(":").map(Number);
-        const ampm = h >= 12 ? "PM" : "AM";
-        const h12 = h % 12 || 12;
-        return `${h12}:${m < 10 ? "0" : ""}${m} ${ampm}`;
-      }
-
-      function formatCountdown(targetSec) {
-        if (targetSec <= 0) return "now";
-        const m = Math.floor(targetSec / 60);
-        const s = targetSec % 60;
-        const h = Math.floor(m / 60);
-        const remM = m % 60;
-
-        if (h > 0) return `in ${h}h ${remM}m`;
-        if (remM > 0) return `in ${remM}m ${s}s`;
-        return `in ${s}s`;
-      }
-
-      function initHeader() {
-        const d = new Date();
-        document.getElementById("dateDay").textContent = DAY_ABBRS[d.getDay()];
-        document.getElementById("dateFull").textContent = d
-          .toLocaleDateString("en-GB", { day: "numeric", month: "short" })
-          .toUpperCase();
-      }
-
-      // TABS
-      function switchTab(tab) {
-        document.getElementById("btnToday").classList.toggle("active", tab === "today");
-        document.getElementById("btnWeek").classList.toggle("active", tab === "week");
-        document.getElementById("btnChat").classList.toggle("active", tab === "chat");
-
-        document.getElementById("viewToday").classList.toggle("active", tab === "today");
-        document.getElementById("viewWeek").classList.toggle("active", tab === "week");
-        document.getElementById("viewChat").classList.toggle("active", tab === "chat");
-      }
-
-      function toggleLegend() {
-        document.getElementById("legendTrigger").classList.toggle("active");
-        document.getElementById("legendContent").classList.toggle("show");
-      }
-
-      // RENDER TODAY
-      function renderToday() {
-        const container = document.getElementById("todayContainer");
-        const dayIdx = new Date().getDay();
-
-        if (dayIdx === 0 || dayIdx === 6) {
-          container.innerHTML = `
+      if (!dayData) {
+        container.innerHTML = `
           <div class="empty-state">
-            <div class="empty-emoji">☕</div>
-            <div class="empty-title">Weekend Mode</div>
-            <div class="empty-sub">No lectures scheduled for today. Enjoy!</div>
+            <div style="font-size:2rem;">🎉</div>
+            <h3>No classes scheduled</h3>
+            <p>Enjoy your break!</p>
           </div>`;
+        return;
+      }
+
+      let html = "";
+      let processedCombined = {};
+
+      SLOTS.forEach(slot => {
+        // Render Break Slot
+        if (slot.isBreak) {
+          html += `
+            <div class="break-card">
+              <span class="break-title">☕ ${slot.label}</span>
+              <span class="time-badge">${slot.time}</span>
+            </div>`;
           return;
         }
 
-        const curMin = getNowMin();
-        let html = "";
+        const slotId = slot.id;
 
-        for (let i = 0; i < SLOTS.length; i++) {
-          const slot = SLOTS[i];
-          if (!slot) continue;
-          
-          const daySched = SCHEDULE_DATA[dayIdx];
-          if (!daySched || !daySched[slot.id]) continue;
-          
-          const slotData = daySched[slot.id];
-          const isHappening = curMin >= slot.startMin && curMin < slot.endMin;
-          const isPast = curMin >= slot.endMin;
-          const isFuture = curMin < slot.startMin;
-
-          let cardStatusClass = "";
-          let tagHtml = "";
-
-          if (isHappening) {
-            cardStatusClass = "happening-now";
-            tagHtml = `
-            <div class="status-tag happening">
-              <span class="pulse-dot"></span>
-              <span>Live &bull; <span class="js-happening-countdown" data-end="${slot.endMin}"></span></span>
-            </div>`;
-          } else if (isPast) {
-            const endedAgo = curMin - slot.endMin;
-            if (endedAgo <= 15) {
-              tagHtml = `<div class="status-tag ended">Just Ended</div>`;
-            }
-          } else if (isFuture) {
-            cardStatusClass = "up-next";
-            tagHtml = `
-            <div class="status-tag next">
-              <span>Up Next &bull; <span class="js-next-countdown" data-start="${slot.startMin}"></span></span>
-            </div>`;
-          }
-
-          if (currentBatch === "ALL") {
-            if (slotData.type === "practical") {
-              const batchEntries = slotData.batches;
-              let matrixHtml = `<div class="batch-matrix-grid">`;
-              BATCHES.forEach((b) => {
-                const alloc = batchEntries[b] || { code: "LIB", badge: "Library" };
-                matrixHtml += `
-                <div class="batch-matrix-item" style="border-left: 3px solid ${alloc.color || '#64748B'};">
-                  <span class="matrix-batch-badge">${b}</span>
-                  <div class="matrix-subj">${alloc.code}</div>
-                </div>`;
-              });
-              matrixHtml += `</div>`;
-
-              html += `
-              <div class="card-item ${cardStatusClass}" style="--chip-color: #10B981">
-                <div class="card-top">
-                  <span class="card-time-pill">${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)}</span>
-                  ${tagHtml}
-                </div>
-                <div class="card-middle">
-                  <div class="card-title-row">
-                    <span class="card-subject-code">PRACTICAL LABS / ALLOCATIONS</span>
-                  </div>
-                  <div class="card-prof-name">Batches A1 to C3</div>
-                  ${matrixHtml}
-                </div>
-              </div>`;
-            } else {
-              const entry = slotData.se2 || slotData.batches["B2"] || { code: "THEORY", badge: "Theory Lecture", prof: "", color: "#4F46E5" };
-              html += `
-              <div class="card-item ${cardStatusClass}" style="--chip-color: ${entry.color}">
-                <div class="card-top">
-                  <span class="card-time-pill">${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)}</span>
-                  ${tagHtml}
-                </div>
-                <div class="card-middle">
-                  <div class="card-title-row">
-                    <span class="card-subject-code">${entry.code}</span>
-                    <span class="card-subject-badge">${entry.badge}</span>
-                  </div>
-                  <div class="card-prof-name">${entry.prof || "Class Lecture"}</div>
-                </div>
-              </div>`;
-            }
-          } else {
-            const entry = (slotData.batches && slotData.batches[currentBatch]) || slotData.se2 || { code: "FREE", badge: "Free", color: "#64748B" };
-            
-            if (entry.code === "FREE") {
-              html += `
-              <div class="card-item free-slot">
-                <div class="card-top">
-                  <span class="card-time-pill">${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)}</span>
-                  <span class="card-subject-code">Free / Self-Study</span>
-                </div>
-              </div>`;
-              continue;
-            }
-
-            html += `
-            <div class="card-item ${cardStatusClass}" style="--chip-color: ${entry.color}">
-              <div class="card-top">
-                <span class="card-time-pill">${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)}</span>
-                ${tagHtml}
-              </div>
-              <div class="card-middle">
-                <div class="card-title-row">
-                  <span class="card-subject-code">${entry.code}</span>
-                  <span class="card-subject-badge">${entry.badge}</span>
-                </div>
-                <div class="card-prof-name">${entry.prof || (entry.isLibrary ? "Self-Study Period" : "Scheduled Slot")}</div>
-              </div>
-            </div>`;
-          }
+        // Handle 2-hour Combined Practical (3-4 or 5-6)
+        if (slotId === 3 && dayData["3-4"]) {
+          html += renderSlotItem(dayData["3-4"], { start: "11:15", end: "13:15", startMin: 675, endMin: 795, timeLabel: "11:15 AM - 01:15 PM" }, isViewingToday, nowMin);
+          processedCombined[3] = true;
+          processedCombined[4] = true;
+          return;
         }
+        if (slotId === 4 && processedCombined[4]) return;
 
-        if (!html) {
-          html = `
-          <div class="empty-state">
-            <div class="empty-emoji">🎉</div>
-            <div class="empty-title">All Done For Today</div>
-            <div class="empty-sub">No more lectures remaining on your schedule.</div>
-          </div>`;
+        if (slotId === 5 && dayData["5-6"]) {
+          html += renderSlotItem(dayData["5-6"], { start: "13:45", end: "15:45", startMin: 825, endMin: 945, timeLabel: "01:45 PM - 03:45 PM" }, isViewingToday, nowMin);
+          processedCombined[5] = true;
+          processedCombined[6] = true;
+          return;
         }
+        if (slotId === 6 && processedCombined[6]) return;
 
-        container.innerHTML = html;
-        updateTimers();
+        // Render Normal 1-Hour Theory Slot
+        const entry = dayData[slotId];
+        if (entry) {
+          html += renderSlotItem(entry, { start: slot.start, end: slot.end, startMin: slot.startMin, endMin: slot.endMin, timeLabel: slot.label }, isViewingToday, nowMin);
+        }
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderSlotItem(item, timing, isToday, nowMin) {
+      const isLive = isToday && (nowMin >= timing.startMin && nowMin < timing.endMin);
+      const isNext = isToday && (nowMin < timing.startMin && (timing.startMin - nowMin <= 45));
+      
+      let cardClass = "lecture-card";
+      let statusHtml = "";
+
+      if (isLive) {
+        cardClass += " live-now";
+        const rem = timing.endMin - nowMin;
+        statusHtml = `<span class="status-badge live"><span class="pulse-dot"></span> Live • ${rem}m left</span>`;
+      } else if (isNext) {
+        cardClass += " up-next";
+        const until = timing.startMin - nowMin;
+        statusHtml = `<span class="status-badge next">⏳ Up Next • in ${until}m</span>`;
       }
 
-      // RENDER WEEK
-      function renderWeek() {
-        const container = document.getElementById("weekContainer");
-        const todayIdx = new Date().getDay();
-        const weekDays = [1, 2, 3, 4, 5];
-        let html = "";
+      // 1. Practical / Lab Allocation
+      if (item.type === "practical") {
+        if (currentBatch === "ALL") {
+          // Show Matrix for ALL Batches
+          let matrixHtml = `<div class="practical-matrix">`;
+          BATCHES.forEach(b => {
+            const alloc = item.batches[b] || { code: "Library", prof: "Self-Study", room: "Library", color: "#64748B" };
+            matrixHtml += `
+              <div class="matrix-item" style="--matrix-color: ${alloc.color};">
+                <div class="matrix-item-top">
+                  <span class="matrix-batch">${b}</span>
+                  <span class="matrix-room">${alloc.room}</span>
+                </div>
+                <div class="matrix-subject">${alloc.code}</div>
+                <div class="matrix-prof">${alloc.prof}</div>
+              </div>`;
+          });
+          matrixHtml += `</div>`;
 
-        html += `<div class="grid-header-cell">Time</div>`;
-        weekDays.forEach((d) => {
-          const isToday = d === todayIdx;
-          html += `<div class="grid-header-cell ${isToday ? "is-today" : ""}">${DAY_ABBRS[d]}</div>`;
+          return `
+            <div class="${cardClass}" style="--subject-color: #10B981;">
+              <div class="card-top">
+                <span class="time-badge">${timing.timeLabel}</span>
+                ${statusHtml}
+              </div>
+              <div class="card-main">
+                <div class="card-subject-row">
+                  <span class="card-subject-code">🔬 Practical Labs</span>
+                  <span class="card-type-tag">All Batches</span>
+                </div>
+                <div class="card-subject-name">Batch Allocations (A1 - C3)</div>
+                ${matrixHtml}
+              </div>
+            </div>`;
+        } else {
+          // Show Single Batch Specific Practical
+          const alloc = item.batches[currentBatch] || { code: "Library", prof: "Self-Study", room: "Library", color: "#64748B" };
+          const isLib = alloc.code.toLowerCase().includes("library");
+          return `
+            <div class="${cardClass}" style="--subject-color: ${alloc.color};">
+              <div class="card-top">
+                <span class="time-badge">${timing.timeLabel}</span>
+                ${statusHtml}
+              </div>
+              <div class="card-main">
+                <div class="card-subject-row">
+                  <span class="card-subject-code">${alloc.code}</span>
+                  <span class="card-type-tag" style="background:${alloc.color}">Batch ${currentBatch}</span>
+                </div>
+                <div class="card-subject-name">${isLib ? "Self-Study Period" : "Lab Session"}</div>
+              </div>
+              <div class="card-footer">
+                <span class="card-prof">👨‍🏫 ${alloc.prof}</span>
+                <span class="card-room-badge">${isLib ? '📚' : '🔬'} ${alloc.room}</span>
+              </div>
+            </div>`;
+        }
+      }
+
+      // 2. Theory Lecture
+      return `
+        <div class="${cardClass}" style="--subject-color: ${item.color};">
+          <div class="card-top">
+            <span class="time-badge">${timing.timeLabel}</span>
+            ${statusHtml}
+          </div>
+          <div class="card-main">
+            <div class="card-subject-row">
+              <span class="card-subject-code">${item.code}</span>
+              <span class="card-type-tag" style="background:${item.color}">Theory</span>
+            </div>
+            <div class="card-subject-name">${item.name}</div>
+          </div>
+          <div class="card-footer">
+            <span class="card-prof">👨‍🏫 ${item.prof}</span>
+            <span class="card-room-badge">📍 ${item.room}</span>
+          </div>
+        </div>`;
+    }
+
+    // 10. RENDER WEEKLY GRID
+    function renderWeekGrid() {
+      const table = document.getElementById("weekTable");
+      const todayNum = new Date().getDay();
+      const weekDays = [1, 2, 3, 4, 5];
+
+      let headerHtml = `<thead><tr><th style="width:70px;">Time</th>`;
+      weekDays.forEach(d => {
+        const isToday = (d === todayNum);
+        headerHtml += `<th class="${isToday ? 'is-today-col' : ''}">${DAY_SHORT[d]} ${isToday ? '•' : ''}</th>`;
+      });
+      headerHtml += `</tr></thead>`;
+
+      let bodyHtml = `<tbody>`;
+
+      SLOTS.forEach(slot => {
+        if (slot.isBreak) {
+          bodyHtml += `
+            <tr>
+              <td class="week-time-label">Break</td>
+              <td colspan="5" class="week-cell-break">☕ ${slot.label} (${slot.time})</td>
+            </tr>`;
+          return;
+        }
+
+        bodyHtml += `<tr>`;
+        bodyHtml += `<td class="week-time-label">${slot.start}</td>`;
+
+        weekDays.forEach(d => {
+          const dayData = SE2_SCHEDULE[d];
+          const isToday = (d === todayNum);
+          
+          let cellContent = "";
+          let color = "#64748B";
+
+          if (dayData) {
+            if ((slot.id === 3 || slot.id === 4) && dayData["3-4"]) {
+              const practical = dayData["3-4"];
+              if (currentBatch === "ALL") {
+                cellContent = `<div class="week-cell-code">LABS</div><div class="week-cell-room">A1-C3</div>`;
+                color = "#10B981";
+              } else {
+                const alloc = practical.batches[currentBatch] || { code: "LIB", room: "Library", color: "#64748B" };
+                cellContent = `<div class="week-cell-code">${alloc.code}</div><div class="week-cell-room">${alloc.room}</div>`;
+                color = alloc.color;
+              }
+            } else if ((slot.id === 5 || slot.id === 6) && dayData["5-6"]) {
+              const practical = dayData["5-6"];
+              if (currentBatch === "ALL") {
+                cellContent = `<div class="week-cell-code">LABS</div><div class="week-cell-room">A1-C3</div>`;
+                color = "#10B981";
+              } else {
+                const alloc = practical.batches[currentBatch] || { code: "LIB", room: "Library", color: "#64748B" };
+                cellContent = `<div class="week-cell-code">${alloc.code}</div><div class="week-cell-room">${alloc.room}</div>`;
+                color = alloc.color;
+              }
+            } else if (dayData[slot.id]) {
+              const theory = dayData[slot.id];
+              cellContent = `<div class="week-cell-code">${theory.code}</div><div class="week-cell-room">${theory.room}</div>`;
+              color = theory.color;
+            }
+          }
+
+          bodyHtml += `
+            <td>
+              <div class="week-cell ${isToday ? 'is-today' : ''}" style="--cell-color: ${color}">
+                ${cellContent || '<span style="color:var(--text-dim);font-size:0.7rem;">-</span>'}
+              </div>
+            </td>`;
         });
 
-        SLOTS.forEach((slot, idx) => {
-          if (slot === null) {
-            const b = idx === 2 ? BREAKS[0] : BREAKS[1];
-            html += `<div class="grid-time-cell" style="font-size:0.55rem;">BREAK</div>`;
-            weekDays.forEach((d) => {
-              const isToday = d === todayIdx;
-              html += `
-              <div class="grid-slot-cell break-slot ${isToday ? "is-today" : ""}">
-                <span class="break-text">${b.label}</span>
-              </div>`;
-            });
+        bodyHtml += `</tr>`;
+      });
+
+      bodyHtml += `</tbody>`;
+      table.innerHTML = headerHtml + bodyHtml;
+    }
+
+    // 11. RENDER DIRECTORY
+    function renderDirectory() {
+      const container = document.getElementById("directoryList");
+      let html = "";
+      for (const key in SUBJECTS) {
+        if (key === "LIB") continue;
+        const subj = SUBJECTS[key];
+        html += `
+          <div class="directory-item">
+            <div class="directory-item-left">
+              <span class="directory-dot" style="--item-color:${subj.color}"></span>
+              <div>
+                <span class="directory-code">${key}</span>
+                <span class="directory-name"> &bull; ${subj.full}</span>
+              </div>
+            </div>
+            <div class="directory-prof">${subj.prof}</div>
+          </div>`;
+      }
+      container.innerHTML = html;
+    }
+
+    // 12. CHATBOT ASSISTANT
+    function askBot(query) {
+      document.getElementById("chatInput").value = query;
+      sendChat();
+    }
+
+    function addMessage(sender, text) {
+      const box = document.getElementById("chatMessages");
+      const msg = document.createElement("div");
+      msg.className = `chat-bubble ${sender}`;
+      msg.innerHTML = text;
+      box.appendChild(msg);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function sendChat() {
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage("user", text);
+      input.value = "";
+
+      setTimeout(() => {
+        const reply = getBotReply(text);
+        addMessage("bot", reply);
+      }, 150);
+    }
+
+    function getBotReply(q) {
+      const query = q.toLowerCase();
+      const batch = (currentBatch === "ALL" ? "A1" : currentBatch);
+      const todayNum = new Date().getDay();
+
+      if (query.includes("next") || query.includes("upcoming")) {
+        if (todayNum === 0 || todayNum === 6) {
+          return "🎉 Today is the weekend! No lectures today. Your next lecture is on <b>Monday at 9:00 AM</b> (DS in E202).";
+        }
+        const nowMin = getNowMin();
+        const dayData = SE2_SCHEDULE[todayNum];
+        if (!dayData) return "No lectures scheduled.";
+
+        for (const slot of SLOTS) {
+          if (slot.isBreak) continue;
+          if (nowMin < slot.startMin) {
+            let info = "";
+            if ((slot.id === 3 || slot.id === 4) && dayData["3-4"]) {
+              const alloc = dayData["3-4"].batches[batch];
+              info = `<b>${alloc.code}</b> in <b>${alloc.room}</b> (${alloc.prof})`;
+            } else if ((slot.id === 5 || slot.id === 6) && dayData["5-6"]) {
+              const alloc = dayData["5-6"].batches[batch];
+              info = `<b>${alloc.code}</b> in <b>${alloc.room}</b> (${alloc.prof})`;
+            } else if (dayData[slot.id]) {
+              const t = dayData[slot.id];
+              info = `<b>${t.code} (${t.name})</b> in <b>${t.room}</b> with <b>${t.prof}</b>`;
+            }
+            const inMin = slot.startMin - nowMin;
+            return `⏰ <b>Up Next at ${slot.start} (in ${inMin}m):</b><br>${info}`;
+          }
+        }
+        return "🎉 All classes for today have ended! See you tomorrow.";
+      }
+
+      if (query.includes("today") || query.includes("schedule")) {
+        if (todayNum === 0 || todayNum === 6) return "☕ Today is the weekend! Enjoy your rest.";
+        const dayData = SE2_SCHEDULE[todayNum];
+        let res = `📅 <b>Today's Schedule (${DAY_NAMES[todayNum]} - Batch ${batch}):</b><br><ul>`;
+        SLOTS.forEach(s => {
+          if (s.isBreak) {
+            res += `<li>☕ <i>${s.label} (${s.time})</i></li>`;
             return;
           }
-
-          html += `<div class="grid-time-cell">${slot.start}</div>`;
-          weekDays.forEach((d) => {
-            const isToday = d === todayIdx;
-            const daySched = SCHEDULE_DATA[d];
-            const slotData = daySched ? daySched[slot.id] : null;
-
-            if (!slotData) {
-              html += `<div class="grid-slot-cell ${isToday ? "is-today" : ""}"></div>`;
-              return;
-            }
-
-            if (currentBatch === "ALL") {
-              if (slotData.type === "practical") {
-                html += `
-                <div class="grid-slot-cell ${isToday ? "is-today" : ""}">
-                  <div class="grid-subj-code" style="color: #10B981;">LABS</div>
-                  <div class="grid-prof-code">A1-C3</div>
-                  <div class="grid-color-line" style="--chip-color: #10B981"></div>
-                </div>`;
-              } else {
-                const entry = slotData.se2 || slotData.batches["B2"] || { code: "THEORY", color: "#4F46E5", prof: "" };
-                html += `
-                <div class="grid-slot-cell ${isToday ? "is-today" : ""}">
-                  <div class="grid-subj-code">${entry.code}</div>
-                  <div class="grid-prof-code">${entry.prof ? entry.prof.replace('Prof. ', '') : ''}</div>
-                  <div class="grid-color-line" style="--chip-color: ${entry.color}"></div>
-                </div>`;
-              }
-            } else {
-              const entry = (slotData.batches && slotData.batches[currentBatch]) || slotData.se2 || { code: "FREE", color: "#64748B", prof: "" };
-              if (entry.code === "FREE") {
-                html += `<div class="grid-slot-cell ${isToday ? "is-today" : ""}"></div>`;
-              } else {
-                html += `
-                <div class="grid-slot-cell ${isToday ? "is-today" : ""}">
-                  <div class="grid-subj-code">${entry.code}</div>
-                  <div class="grid-prof-code">${entry.prof ? entry.prof.replace('Prof. ', '') : (entry.isLibrary ? 'Library' : '')}</div>
-                  <div class="grid-color-line" style="--chip-color: ${entry.color}"></div>
-                </div>`;
-              }
-            }
-          });
-        });
-
-        container.innerHTML = html;
-      }
-
-      // RENDER LEGEND
-      function renderLegend() {
-        const container = document.getElementById("legendContent");
-        let html = "";
-        Object.keys(SUBJECTS).forEach((key) => {
-          if (key === "FREE") return;
-          const subj = SUBJECTS[key];
-          html += `
-          <div class="legend-row">
-            <div class="legend-left">
-              <span class="legend-dot" style="--chip-color: ${subj.color}"></span>
-              <span class="legend-abbr">${key}</span>
-              <span class="legend-full-name">${subj.full}</span>
-            </div>
-            <span class="legend-prof-tag">${subj.prof}</span>
-          </div>`;
-        });
-        container.innerHTML = html;
-      }
-
-      // CHATBOT ASSISTANT ENGINE
-      function sendQuickPrompt(text) {
-        document.getElementById("chatInput").value = text;
-        sendChatMessage();
-      }
-
-      function addChatMessage(sender, htmlContent) {
-        const box = document.getElementById("chatMessages");
-        const msg = document.createElement("div");
-        msg.className = `chat-msg ${sender}`;
-        msg.innerHTML = htmlContent;
-        box.appendChild(msg);
-        box.scrollTop = box.scrollHeight;
-      }
-
-      function sendChatMessage() {
-        const input = document.getElementById("chatInput");
-        const text = input.value.trim();
-        if (!text) return;
-
-        addChatMessage("user", text);
-        input.value = "";
-
-        setTimeout(() => {
-          const response = generateChatbotReply(text);
-          addChatMessage("bot", response);
-        }, 180);
-      }
-
-      function generateChatbotReply(query) {
-        const q = query.toLowerCase();
-        const batch = (currentBatch === "ALL" ? "B2" : currentBatch);
-        const dayIdx = new Date().getDay();
-
-        // 0. Developer query
-        if (
-          q.includes("developer") ||
-          q.includes("who built") ||
-          q.includes("who made") ||
-          q.includes("creator") ||
-          q.includes("author") ||
-          q.includes("swaraj") ||
-          q.includes("social") ||
-          q.includes("contact")
-        ) {
-          return `👨‍💻 <b>Crafted by Swaraj Shelke</b><br>Second Year Engineering &bull; PICT<br><br>Here are his links if you'd like to connect or check out his work:<br>• 📸 <a href="https://www.instagram.com/swarajshelke12" target="_blank" rel="noopener">Instagram</a><br>• 📺 <a href="https://www.youtube.com/@swaraj_shelke" target="_blank" rel="noopener">YouTube</a><br>• 💼 <a href="https://www.linkedin.com/in/swaraj-shelke-0a3a752b8/" target="_blank" rel="noopener">LinkedIn</a><br>• 🐙 <a href="https://github.com/swarajshelke12" target="_blank" rel="noopener">GitHub</a>`;
-        }
-
-        // 1. Next class / upcoming query
-        if (q.includes("next") || q.includes("upcoming")) {
-          if (dayIdx === 0 || dayIdx === 6) {
-            return `🎉 Today is the weekend! No more classes today. Your next lecture is on <b>Monday at 9:00 AM</b>.`;
-          }
-          const curMin = getNowMin();
-          const daySched = SCHEDULE_DATA[dayIdx];
-          for (let i = 0; i < SLOTS.length; i++) {
-            const slot = SLOTS[i];
-            if (!slot) continue;
-            if (curMin < slot.startMin) {
-              const slotData = daySched[slot.id];
-              const entry = (slotData.batches && slotData.batches[batch]) || slotData.se2;
-              const rem = slot.startMin - curMin;
-              return `⏰ <b>Up Next (Batch ${batch}):</b><br>• <b>${entry.code}</b> (${entry.badge})<br>• Time: ${formatTime12(slot.start)} &ndash; ${formatTime12(slot.end)} (in ${rem} min)<br>• Faculty: ${entry.prof || "Self-Study"}`;
-            }
-          }
-          return `🎉 All classes for today have ended! Relax and recharge for tomorrow.`;
-        }
-
-        // 2. Today's schedule
-        if (q.includes("today") || q.includes("schedule")) {
-          if (dayIdx === 0 || dayIdx === 6) {
-            return `☕ Today is the weekend! There are no scheduled classes today.`;
-          }
-          const daySched = SCHEDULE_DATA[dayIdx];
-          let reply = `📅 <b>Today's Schedule for Batch ${batch} (${DAY_NAMES[dayIdx]}):</b><br><ul>`;
-          SLOTS.forEach((slot, idx) => {
-            if (!slot) {
-              const b = idx === 2 ? BREAKS[0] : BREAKS[1];
-              reply += `<li>☕ <i>${b.label} (${b.range})</i></li>`;
-              return;
-            }
-            const slotData = daySched[slot.id];
-            const entry = (slotData.batches && slotData.batches[batch]) || slotData.se2;
-            reply += `<li><b>${slot.start}</b>: ${entry.code} (${entry.badge}) &ndash; ${entry.prof || "Library"}</li>`;
-          });
-          reply += `</ul>`;
-          return reply;
-        }
-
-        // 3. Faculty query
-        if (q.includes("who teaches") || q.includes("prof") || q.includes("faculty") || q.includes("teacher")) {
-          for (const key in SUBJECTS) {
-            if (q.includes(key.toLowerCase()) || q.includes(SUBJECTS[key].full.toLowerCase())) {
-              return `👨‍🏫 <b>${key} (${SUBJECTS[key].full})</b> is taught by: <br><b>${SUBJECTS[key].prof}</b>`;
-            }
-          }
-          return `Here is our faculty directory:<br>• <b>DS</b>: Prof. Alka Kumbhar / Nilima Patil<br>• <b>OS</b>: Prof. Smita Sapkal / Mahesh Swami<br>• <b>OOPCG</b>: Prof. Ashvini Kheole / Kalyani Zore<br>• <b>DELD</b>: Prof. Smita Kathar<br>• <b>UHV</b>: Prof. Neelam Jadhav<br>• <b>DM</b>: Dr. Maya Jadhav<br>• <b>ED</b>: Prof. Nilam Naidu`;
-        }
-
-        // 4. Specific Subject / Lab Query
-        if (q.includes("ds") || q.includes("data structure")) {
-          return `💻 <b>Data Structures (DS / DS Lab):</b><br>• Theory: Mon 9:00 AM, Tue 11:15 AM, Fri 10:00 AM<br>• Practicals: Scheduled across Mon, Tue, Wed, Thu, Fri depending on your batch. (Check the Full Week tab for ${batch})`;
-        }
-
-        if (q.includes("oopcg") || q.includes("graphics") || q.includes("oop")) {
-          return `🎨 <b>OOPCG (OOP & Computer Graphics):</b><br>• Theory: Tue 10:00 AM, Wed 10:00 AM, Thu 9:00 AM<br>• Faculty: Prof. Ashvini Kheole / Kalyani Zore`;
-        }
-
-        if (q.includes("deld") || q.includes("digital")) {
-          return `⚡ <b>DELD (Digital Electronics & Logic):</b><br>• Theory: Tue 12:15 PM, Thu 10:00 AM<br>• Faculty: Prof. Smita Kathar`;
-        }
-
-        if (q.includes("os") || q.includes("operating")) {
-          return `🖥️ <b>OS (Operating Systems):</b><br>• Theory: Mon 10:00 AM, Tue 9:00 AM, Wed 9:00 AM<br>• Faculty: Prof. Smita Sapkal / Mahesh Swami`;
-        }
-
-        if (q.includes("break") || q.includes("lunch")) {
-          return `☕ <b>Daily Break Timings:</b><br>• <b>Short Break</b>: 11:00 AM &ndash; 11:15 AM (15 min)<br>• <b>Lunch Break</b>: 1:15 PM &ndash; 1:45 PM (30 min)`;
-        }
-
-        // 5. Day queries
-        const dayNamesLookup = { monday: 1, mon: 1, tuesday: 2, tue: 2, wednesday: 3, wed: 3, thursday: 4, thu: 4, friday: 5, fri: 5 };
-        for (const dname in dayNamesLookup) {
-          if (q.includes(dname)) {
-            const dnum = dayNamesLookup[dname];
-            const daySched = SCHEDULE_DATA[dnum];
-            let reply = `📅 <b>Schedule for ${dname.toUpperCase()} (Batch ${batch}):</b><br><ul>`;
-            SLOTS.forEach((slot, idx) => {
-              if (!slot) return;
-              const slotData = daySched[slot.id];
-              const entry = (slotData.batches && slotData.batches[batch]) || slotData.se2;
-              reply += `<li><b>${slot.start} &ndash; ${slot.end}</b>: ${entry.code} (${entry.badge})</li>`;
-            });
-            reply += `</ul>`;
-            return reply;
-          }
-        }
-
-        // Default response
-        return `🤖 You can ask me:<br>• "What is my next class?"<br>• "Today's schedule"<br>• "Schedule on Thursday"<br>• "Who teaches DELD?"<br>• "Who built this website?"`;
-      }
-
-      // DYNAMIC TIMER UPDATER
-      function updateTimers() {
-        const nowSec = getNowSec();
-
-        document.querySelectorAll(".js-next-countdown").forEach((el) => {
-          const startMin = parseInt(el.getAttribute("data-start"), 10);
-          const remSec = startMin * 60 - nowSec;
-          el.textContent = formatCountdown(remSec);
-        });
-
-        document.querySelectorAll(".js-happening-countdown").forEach((el) => {
-          const endMin = parseInt(el.getAttribute("data-end"), 10);
-          const remSec = endMin * 60 - nowSec;
-          if (remSec <= 0) {
-            el.textContent = "Ending now";
-          } else {
-            const m = Math.floor(remSec / 60);
-            const s = remSec % 60;
-            el.textContent = `${m}m ${s}s left`;
+          if (s.id === 3 && dayData["3-4"]) {
+            const a = dayData["3-4"].batches[batch];
+            res += `<li><b>11:15 AM - 1:15 PM</b>: ${a.code} (${a.room})</li>`;
+          } else if (s.id === 5 && dayData["5-6"]) {
+            const a = dayData["5-6"].batches[batch];
+            res += `<li><b>01:45 PM - 3:45 PM</b>: ${a.code} (${a.room})</li>`;
+          } else if (dayData[s.id]) {
+            const t = dayData[s.id];
+            res += `<li><b>${s.label}</b>: ${t.code} &ndash; ${t.room}</li>`;
           }
         });
+        res += `</ul>`;
+        return res;
       }
 
-      function dismissTip() {
-        const bar = document.getElementById("installTipBar");
-        if (bar) bar.style.display = "none";
-        localStorage.setItem("tip_dismissed", "1");
-      }
-      if (localStorage.getItem("tip_dismissed") === "1") {
-        const bar = document.getElementById("installTipBar");
-        if (bar) bar.style.display = "none";
+      if (query.includes("ds")) {
+        return "💻 <b>Data Structures (DS / DS Lab):</b><br>• Theory: Mon 9AM (E202), Tue 11:15AM (E202), Fri 10AM (E202)<br>• Faculty: Prof. Alka Kumbhar (AAK), Prof. Nilima Patil, Prof. Smita Sapkal";
       }
 
-      // INITIALIZE
+      if (query.includes("os") || query.includes("operating")) {
+        return "🖥️ <b>Operating Systems (OS):</b><br>• Theory: Mon 10AM, Tue 9AM, Wed 9AM in <b>Room E202</b><br>• Faculty: Prof. Smita Sapkal (SS)";
+      }
+
+      if (query.includes("oopcg") || query.includes("graphics")) {
+        return "🎨 <b>OOPCG (OOP & Computer Graphics):</b><br>• Theory: Tue 10AM, Wed 10AM, Thu 9AM in <b>Room E202</b><br>• Faculty: Prof. Ashvini Kheole (APK)";
+      }
+
+      if (query.includes("deld") || query.includes("digital")) {
+        return "⚡ <b>DELD (Digital Electronics & Logic):</b><br>• Theory: Tue 12:15PM, Thu 10AM in <b>Room E202</b><br>• Faculty: Prof. Smita Kathar (SK)";
+      }
+
+      if (query.includes("break") || query.includes("lunch")) {
+        return "☕ <b>Daily Breaks:</b><br>• <b>Short Break</b>: 11:00 AM &ndash; 11:15 AM<br>• <b>Lunch Break</b>: 01:15 PM &ndash; 01:45 PM";
+      }
+
+      if (query.includes("who teaches") || query.includes("prof") || query.includes("teacher")) {
+        return "👨‍🏫 <b>Faculty Directory:</b><br>• <b>DS</b>: Prof. Alka Kumbhar (AAK)<br>• <b>OS</b>: Prof. Smita Sapkal (SS)<br>• <b>OOPCG</b>: Prof. Ashvini Kheole (APK)<br>• <b>DELD</b>: Prof. Smita Kathar (SK)<br>• <b>UHV</b>: Prof. Neelam Jadhav (NJ)<br>• <b>DM</b>: Dr. Maya Jadhav (Dr. MJ)<br>• <b>ED</b>: Prof. Nilam Naidu (NN)";
+      }
+
+      return "🤖 You can ask me about:<br>• <i>'What is my next class?'</i><br>• <i>'Today\'s schedule'</i><br>• <i>'When is DS / OS / OOPCG?'</i><br>• <i>'Who teaches DELD?'</i><br>• <i>'Break timings'</i>";
+    }
+
+    // 13. INITIALIZE
+    function init() {
       initTheme();
-      initHeader();
-      updateBatchUI();
-      renderToday();
-      renderWeek();
-      renderLegend();
 
-      setInterval(updateTimers, 1000);
-      setInterval(renderToday, 30000);
-    </script>
-  </body>
+      // Set today's date in header
+      const d = new Date();
+      const dayName = DAY_NAMES[d.getDay()];
+      const dateFormatted = d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+      document.getElementById("headerDateStr").textContent = `${dayName}, ${dateFormatted} • Room E202`;
+
+      // Set initial day button state
+      document.querySelectorAll(".day-btn").forEach(btn => {
+        const dNum = parseInt(btn.getAttribute("data-day"), 10);
+        if (dNum === d.getDay()) {
+          btn.classList.add("is-today");
+        }
+        btn.classList.toggle("active", dNum === selectedDay);
+      });
+
+      // Set initial batch button state
+      selectBatch(currentBatch);
+      renderDirectory();
+
+      // Refresh real-time indicators every 30s
+      setInterval(() => {
+        renderDayTimeline();
+      }, 30000);
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
 </html>
