@@ -50,37 +50,6 @@
       --radius-full: 9999px;
     }
 
-    [data-theme="dark"] {
-      --bg-app: #090D16;
-      --bg-surface: #111827;
-      --bg-surface-elevated: #1F2937;
-      --bg-muted: #1E293B;
-      --bg-hover: #334155;
-      
-      --border-subtle: #1E293B;
-      --border-strong: #334155;
-      
-      --text-main: #F8FAFC;
-      --text-muted: #94A3B8;
-      --text-dim: #64748B;
-      
-      --primary: #6366F1;
-      --primary-light: rgba(99, 102, 241, 0.15);
-      --primary-glow: rgba(99, 102, 241, 0.25);
-      
-      --status-live-bg: rgba(16, 185, 129, 0.15);
-      --status-live-text: #34D399;
-      --status-live-border: rgba(16, 185, 129, 0.3);
-      
-      --status-next-bg: rgba(245, 158, 11, 0.15);
-      --status-next-text: #FBBF24;
-      --status-next-border: rgba(245, 158, 11, 0.3);
-      
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-    }
-
     /* =========================================================
        BASE & RESET
        ========================================================= */
@@ -153,31 +122,6 @@
       font-size: 0.76rem;
       color: var(--text-muted);
       font-weight: 500;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .theme-toggle-btn, .icon-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-md);
-      background: var(--bg-muted);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .theme-toggle-btn:hover, .icon-btn:hover {
-      background: var(--bg-hover);
-      transform: translateY(-1px);
     }
 
     /* =========================================================
@@ -865,13 +809,8 @@
       text-align: center;
       font-size: 0.74rem;
       color: var(--text-dim);
-      padding-top: 8px;
-    }
-
-    .app-footer a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 700;
+      padding: 16px 8px 8px;
+      margin-top: auto;
     }
 
     /* EMPTY STATE */
@@ -906,24 +845,6 @@
           <h1>Class Timetable</h1>
           <p id="headerDateStr">Second Year • Computer Engineering</p>
         </div>
-      </div>
-      <div class="header-actions">
-        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle Theme">
-          <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-          <svg id="sunIcon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
-        </button>
       </div>
     </header>
 
@@ -1028,9 +949,10 @@
           <div class="chat-quick-buttons">
             <button class="quick-btn" onclick="askBot('What is my next class?')">⏰ Next class?</button>
             <button class="quick-btn" onclick="askBot('Today\'s schedule')">📅 Today's schedule</button>
-            <button class="quick-btn" onclick="askBot('When is DS Lab?')">💻 When is DS Lab?</button>
+            <button class="quick-btn" onclick="askBot('When is DS Lab?')">💻 DS Lab</button>
             <button class="quick-btn" onclick="askBot('Who teaches OS?')">👨‍🏫 Who teaches OS?</button>
-            <button class="quick-btn" onclick="askBot('Break timings')">☕ Break timings</button>
+            <button class="quick-btn" onclick="askBot('Break timings')">☕ Breaks</button>
+            <button class="quick-btn" onclick="askBot('Who made this website?')">💡 Who built this?</button>
           </div>
           <div class="chat-input-bar">
             <input type="text" id="chatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChat()" />
@@ -1304,34 +1226,7 @@
       return d.getHours() * 60 + d.getMinutes();
     }
 
-    // 5. THEME MANAGEMENT
-    function initTheme() {
-      const saved = localStorage.getItem("se2_theme") || "light";
-      document.documentElement.setAttribute("data-theme", saved);
-      updateThemeIcon(saved);
-    }
-
-    function toggleTheme() {
-      const curr = document.documentElement.getAttribute("data-theme") || "light";
-      const next = curr === "light" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("se2_theme", next);
-      updateThemeIcon(next);
-    }
-
-    function updateThemeIcon(theme) {
-      const sun = document.getElementById("sunIcon");
-      const moon = document.getElementById("moonIcon");
-      if (theme === "dark") {
-        sun.style.display = "block";
-        moon.style.display = "none";
-      } else {
-        sun.style.display = "none";
-        moon.style.display = "block";
-      }
-    }
-
-    // 6. BATCH SELECTION
+    // 5. BATCH SELECTION
     function selectBatch(batch) {
       currentBatch = batch;
       localStorage.setItem("se2_batch", batch);
@@ -1655,6 +1550,23 @@
       const batch = (currentBatch === "ALL" ? "A1" : currentBatch);
       const todayNum = new Date().getDay();
 
+      if (
+        query.includes("developer") ||
+        query.includes("who built") ||
+        query.includes("who made") ||
+        query.includes("creator") ||
+        query.includes("author") ||
+        query.includes("swaraj") ||
+        query.includes("social") ||
+        query.includes("contact") ||
+        query.includes("github") ||
+        query.includes("linkedin") ||
+        query.includes("instagram") ||
+        query.includes("youtube")
+      ) {
+        return `👨‍💻 <b>Crafted by Swaraj Shelke</b><br>Second Year Computer Engineering • PICT<br><br><b>Connect with me:</b><br>• 🐙 <a href="https://github.com/swarajshelke12" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;">GitHub</a><br>• 💼 <a href="https://www.linkedin.com/in/swaraj-shelke-0a3a752b8/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;">LinkedIn</a><br>• 📸 <a href="https://www.instagram.com/swarajshelke12" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;">Instagram</a><br>• 📺 <a href="https://www.youtube.com/@swaraj_shelke" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;">YouTube</a>`;
+      }
+
       if (query.includes("next") || query.includes("upcoming")) {
         if (todayNum === 0 || todayNum === 6) {
           return "🎉 Today is the weekend! No lectures today. Your next lecture is on <b>Monday at 9:00 AM</b> (DS in E202).";
@@ -1735,10 +1647,8 @@
       return "🤖 You can ask me about:<br>• <i>'What is my next class?'</i><br>• <i>'Today\'s schedule'</i><br>• <i>'When is DS / OS / OOPCG?'</i><br>• <i>'Who teaches DELD?'</i><br>• <i>'Break timings'</i>";
     }
 
-    // 13. INITIALIZE
+    // 12. INITIALIZE
     function init() {
-      initTheme();
-
       // Set today's date in header
       const d = new Date();
       const dayName = DAY_NAMES[d.getDay()];

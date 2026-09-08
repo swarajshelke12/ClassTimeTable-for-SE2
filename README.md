@@ -13,7 +13,7 @@ A simple, lightning-fast, and mobile-friendly timetable web app designed exclusi
 - **Full Weekly Grid View**: Compact matrix table to review the entire 5-day week at a glance.
 - **Faculty & Subject Directory**: Quick look-up for subject full names, faculty in-charge, and classrooms/labs.
 - **Built-in Assistant**: Instant answers for your next class, break timings, faculty inquiries, and lab rooms.
-- **Dark & Light Themes**: High-contrast, easy-on-the-eyes theme toggle.
+- **Clean & Crisp UI**: High-contrast, easy-on-the-eyes light design with modern typography.
 
 ---
 
@@ -22,3 +22,15 @@ A simple, lightning-fast, and mobile-friendly timetable web app designed exclusi
 1. Open `index.html` in any browser on your phone, tablet, or PC.
 2. Select your batch pill at the top (`A1` through `C3`, or `ALL`).
 3. View your daily lectures under **Daily Schedule**, check the **Weekly Grid**, or ask the **Assistant**.
+
+---
+
+## 👨‍💻 Developer & Connect
+
+Built with ❤️ by **Swaraj Shelke** (SE Computer Engineering, PICT).
+
+Connect with me:
+- 🐙 [GitHub](https://github.com/swarajshelke12)
+- 💼 [LinkedIn](https://www.linkedin.com/in/swaraj-shelke-0a3a752b8/)
+- 📸 [Instagram](https://www.instagram.com/swarajshelke12)
+- 📺 [YouTube](https://www.youtube.com/@swaraj_shelke)
